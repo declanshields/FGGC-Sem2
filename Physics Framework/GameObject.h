@@ -9,6 +9,7 @@
 
 #include "Transform.h"
 #include "Appearance.h"
+#include "ParticleModel.h"
 
 using namespace DirectX;
 using namespace std;
@@ -33,6 +34,7 @@ public:
 private:
 	Transform* _transform;
 	Appearance* _appearance;
+	ParticleModel* _particleModel;
 
 	string _type;
 

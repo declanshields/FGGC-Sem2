@@ -1,19 +1,8 @@
-﻿  Appearance.cpp
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Appearance.h(16,34): warning C5205: delete of an abstract class 'ID3D11ShaderResourceView' that has a non-virtual destructor results in undefined behavior
+﻿  GameObject.cpp
+C:\Users\decla\source\repos\declanshields\FGGC-Sem2\Physics Framework\Appearance.h(16,34): warning C5205: delete of an abstract class 'ID3D11ShaderResourceView' that has a non-virtual destructor results in undefined behavior
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\d3d11.h(3618): message : see declaration of 'ID3D11ShaderResourceView'
-  Application.cpp
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Appearance.h(16,34): warning C5205: delete of an abstract class 'ID3D11ShaderResourceView' that has a non-virtual destructor results in undefined behavior
+C:\Users\decla\source\repos\declanshields\FGGC-Sem2\Physics Framework\GameObject.cpp(24,2): warning C5205: delete of an abstract class 'ID3D11ShaderResourceView' that has a non-virtual destructor results in undefined behavior
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\d3d11.h(3618): message : see declaration of 'ID3D11ShaderResourceView'
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(702,21): warning C4244: 'initializing': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-  Main.cpp
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Appearance.h(16,34): warning C5205: delete of an abstract class 'ID3D11ShaderResourceView' that has a non-virtual destructor results in undefined behavior
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\d3d11.h(3618): message : see declaration of 'ID3D11ShaderResourceView'
-  GameObject.cpp
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Appearance.h(16,34): warning C5205: delete of an abstract class 'ID3D11ShaderResourceView' that has a non-virtual destructor results in undefined behavior
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\d3d11.h(3618): message : see declaration of 'ID3D11ShaderResourceView'
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\GameObject.cpp(24,2): warning C5205: delete of an abstract class 'ID3D11ShaderResourceView' that has a non-virtual destructor results in undefined behavior
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\d3d11.h(3618): message : see declaration of 'ID3D11ShaderResourceView'
-  OBJLoader.cpp
-  Generating Code...
+C:\Users\decla\source\repos\declanshields\FGGC-Sem2\Physics Framework\GameObject.cpp(31,31): warning C4100: 't': unreferenced formal parameter
 Appearance.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
-  DX11 Framework.vcxproj -> C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Debug\DX11 Framework.exe
+  DX11 Framework.vcxproj -> C:\Users\decla\Source\Repos\declanshields\FGGC-Sem2\Physics Framework\Debug\DX11 Framework.exe

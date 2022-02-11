@@ -181,6 +181,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	gameObject->GetTransform()->SetRotation(Vector3D(0.0f, 0.0f, 0.0f));
 	gameObject->GetAppearance()->SetTextureRV(_pTextureRV);
 	_gameObjects.push_back(gameObject);
+
 	return S_OK;
 }
 
@@ -658,12 +659,15 @@ void Application::Cleanup()
 		_camera = nullptr;
 	}
 
-	for (auto gameObject : _gameObjects)
+	if (_gameObjects.size() != 0) 
 	{
-		if (gameObject)
+		for (auto gameObject : _gameObjects)
 		{
-			delete gameObject;
-			gameObject = nullptr;
+			if (gameObject)
+			{
+				delete gameObject;
+				gameObject = nullptr;
+			}
 		}
 	}
 
@@ -710,23 +714,28 @@ void Application::Update()
 		return;
 
 	// Move gameobject
-	if (GetAsyncKeyState('1'))
+	if (_gameObjects.size() != 0) 
 	{
-		moveForward(1);
-	}
-	if (GetAsyncKeyState('2'))
-	{
-		moveForward(2);
+		if (GetAsyncKeyState('1'))
+		{
+			Debugger->DebugMsg("Key 1 pressed.");
+			moveForward(1);
+		}
+		if (GetAsyncKeyState('2'))
+		{
+			moveForward(2);
+		}
+
+		if (GetAsyncKeyState('3'))
+		{
+			moveBackward(3);
+		}
+		if (GetAsyncKeyState('4'))
+		{
+			moveBackward(4);
+		}
 	}
 
-	if (GetAsyncKeyState('3'))
-	{
-		moveBackward(3);
-	}
-	if (GetAsyncKeyState('4'))
-	{
-		moveBackward(4);
-	}
 	// Update camera
 	float angleAroundZ = XMConvertToRadians(_cameraOrbitAngleXZ);
 
@@ -741,9 +750,12 @@ void Application::Update()
 	_camera->Update();
 
 	// Update objects
-	for (auto gameObject : _gameObjects)
+	if (_gameObjects.size() != 0) 
 	{
-		gameObject->Update(deltaTime);
+		for (auto gameObject : _gameObjects)
+		{
+			gameObject->Update(deltaTime);
+		}
 	}
 
 	dwTimeStart = dwTimeCur;
@@ -788,36 +800,38 @@ void Application::Draw()
 	cb.EyePosW = _camera->GetPosition();
 
 	// Render all scene objects
-	for (auto gameObject : _gameObjects)
-	{
-		// Get render material
-		Material material = gameObject->GetAppearance()->GetMaterialData();
-
-		// Copy material to shader
-		cb.surface.AmbientMtrl = material.ambient;
-		cb.surface.DiffuseMtrl = material.diffuse;
-		cb.surface.SpecularMtrl = material.specular;
-
-		// Set world matrix
-		cb.World = XMMatrixTranspose(gameObject->GetTransform()->GetWorldMatrix());
-
-		// Set texture
-		if (gameObject->GetAppearance()->HasTexture())
+	if (_gameObjects.size() != 0) {
+		for (auto gameObject : _gameObjects)
 		{
-			ID3D11ShaderResourceView * textureRV = gameObject->GetAppearance()->GetTextureRV();
-			_pImmediateContext->PSSetShaderResources(0, 1, &textureRV);
-			cb.HasTexture = 1.0f;
-		}
-		else
-		{
-			cb.HasTexture = 0.0f;
-		}
+			// Get render material
+			Material material = gameObject->GetAppearance()->GetMaterialData();
 
-		// Update constant buffer
-		_pImmediateContext->UpdateSubresource(_pConstantBuffer, 0, nullptr, &cb, 0, 0);
+			// Copy material to shader
+			cb.surface.AmbientMtrl = material.ambient;
+			cb.surface.DiffuseMtrl = material.diffuse;
+			cb.surface.SpecularMtrl = material.specular;
 
-		// Draw object
-		gameObject->Draw(_pImmediateContext);
+			// Set world matrix
+			cb.World = XMMatrixTranspose(gameObject->GetTransform()->GetWorldMatrix());
+
+			// Set texture
+			if (gameObject->GetAppearance()->HasTexture())
+			{
+				ID3D11ShaderResourceView* textureRV = gameObject->GetAppearance()->GetTextureRV();
+				_pImmediateContext->PSSetShaderResources(0, 1, &textureRV);
+				cb.HasTexture = 1.0f;
+			}
+			else
+			{
+				cb.HasTexture = 0.0f;
+			}
+
+			// Update constant buffer
+			_pImmediateContext->UpdateSubresource(_pConstantBuffer, 0, nullptr, &cb, 0, 0);
+
+			// Draw object
+			gameObject->Draw(_pImmediateContext);
+		}
 	}
 
     //

@@ -26,6 +26,9 @@ GameObject::~GameObject()
 
 	delete _parent;
 	_parent = nullptr;
+
+	delete _particleModel;
+	_particleModel = nullptr;
 }
 
 void GameObject::Update(float t)
@@ -41,22 +44,21 @@ void GameObject::Update(float t)
 	{
 		_transform->SetWorldMatrix(_transform->GetWorldMatrix() * _parent->_transform->GetWorldMatrix());
 	}
-
-	Debug debugger = Debug();
-	debugger.DebugMsg(std::to_string(t));
 }
 
 void GameObject::Draw(ID3D11DeviceContext * pImmediateContext)
 {
 	// NOTE: We are assuming that the constant buffers and all other draw setup has already taken place
 
-	ID3D11Buffer* const vbuff = _appearance->GetGeometryData().vertexBuffer;
+	ID3D11Buffer* const vBuff = _appearance->GetGeometryData().vertexBuffer;
 	UINT const vStride = _appearance->GetGeometryData().vertexBufferStride;
-
+	UINT const vOffset = _appearance->GetGeometryData().vertexBufferOffset;;
+	ID3D11Buffer* iBuff = _appearance->GetGeometryData().indexBuffer;
+	UINT const iNum = _appearance->GetGeometryData().numberOfIndices;
 
 	// Set vertex and index buffers
-	pImmediateContext->IASetVertexBuffers(0, 1, &vbuff, &vStride, &_geometry.vertexBufferOffset);
-	pImmediateContext->IASetIndexBuffer(_geometry.indexBuffer, DXGI_FORMAT_R16_UINT, 0);
+	pImmediateContext->IASetVertexBuffers(0, 1, &vBuff, &vStride, &vOffset);
+	pImmediateContext->IASetIndexBuffer(iBuff, DXGI_FORMAT_R16_UINT, 0);
 
-	pImmediateContext->DrawIndexed(_geometry.numberOfIndices, 0, 0);
+	pImmediateContext->DrawIndexed(iNum, 0, 0);
 }
