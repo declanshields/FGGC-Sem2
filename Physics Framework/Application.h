@@ -37,38 +37,6 @@ using namespace DirectX;
 //	XMFLOAT2 Tex;
 //};
 
-
-struct SurfaceInfo
-{
-	XMFLOAT4 AmbientMtrl;
-	XMFLOAT4 DiffuseMtrl;
-	XMFLOAT4 SpecularMtrl;
-};
-
-struct Light
-{
-	XMFLOAT4 AmbientLight;
-	XMFLOAT4 DiffuseLight;
-	XMFLOAT4 SpecularLight;
-
-	float SpecularPower;
-	XMFLOAT3 LightVecW;
-};
-
-struct ConstantBuffer
-{
-	XMMATRIX World;
-	XMMATRIX View;
-	XMMATRIX Projection;
-	
-	SurfaceInfo surface;
-
-	Light light;
-
-	XMFLOAT3 EyePosW;
-	float HasTexture;
-};
-
 class Application
 {
 private:
@@ -110,6 +78,7 @@ private:
 	vector<GameObject *> _gameObjects;
 
 	Debug* Debugger;
+	Transform* baseTransform;
 
 	Camera * _camera = nullptr;
 	float _cameraOrbitRadius = 7.0f;
