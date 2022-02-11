@@ -1,0 +1,5 @@
+﻿  Application.cpp
+C:\Users\decla\OneDrive - Staffordshire University\FGGC\Semester 2\Physics Framework\Physics Framework\Application.cpp(695,21): warning C4244: 'initializing': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+  Main.cpp
+  Generating Code...
+  DX11 Framework.vcxproj -> C:\Users\decla\OneDrive - Staffordshire University\FGGC\Semester 2\Physics Framework\Physics Framework\Debug\DX11 Framework.exe
