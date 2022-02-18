@@ -101,8 +101,6 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
         return E_FAIL;
     }
 
-	Debugger = new Debug();
-
 	CreateDDSTextureFromFile(_pd3dDevice, L"Resources\\stone.dds", nullptr, &_pTextureRV);
 	CreateDDSTextureFromFile(_pd3dDevice, L"Resources\\floor.dds", nullptr, &_pGroundTextureRV);
 	//CreateDDSTextureFromFile(_pd3dDevice, L"Resources\\Hercules_COLOR.dds", nullptr, &_pHerculesTextureRV);
@@ -154,10 +152,8 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	noSpecMaterial.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	noSpecMaterial.specular = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
 	noSpecMaterial.specularPower = 0.0f;
-
-	baseTransform = new Transform();
 	
-	GameObject * gameObject = new GameObject("Floor", new Transform(), new Appearance(planeGeometry, noSpecMaterial));
+	GameObject * gameObject = new GameObject(new Transform(), new Appearance(planeGeometry, noSpecMaterial, "Floor"), new ParticleModel());
 	gameObject->GetTransform()->SetPosition(Vector3D(0.0f, 0.0f, 0.0f));
 	gameObject->GetTransform()->SetScale(Vector3D(15.0f, 15.0f, 15.0f));
 	gameObject->GetTransform()->SetRotation(Vector3D(XMConvertToRadians(90.0f), 0.0f, 0.0f));
@@ -167,7 +163,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 
     for (auto i = 0; i < NUMBER_OF_CUBES; i++)
 	{
-		gameObject = new GameObject("Cube" + i, new Transform(), new Appearance(cubeGeometry, shinyMaterial));
+		gameObject = new GameObject(new Transform(), new Appearance(cubeGeometry, shinyMaterial, "Cube" + i), new ParticleModel());
 		gameObject->GetTransform()->SetScale(Vector3D(0.5f, 0.5f, 0.5f));
 		gameObject->GetTransform()->SetPosition(Vector3D(-4.0f + (i * 2.0f), 0.5f, 10.0f));	
 		gameObject->GetTransform()->SetRotation(Vector3D(0.0f, 0.0f, 0.0f));
@@ -175,7 +171,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 
 		_gameObjects.push_back(gameObject);
 	}
-	gameObject = new GameObject("donut", new Transform() , new Appearance(herculesGeometry, shinyMaterial));
+	gameObject = new GameObject(new Transform() , new Appearance(herculesGeometry, shinyMaterial, "donut"), new ParticleModel());
 	gameObject->GetTransform()->SetScale(Vector3D(0.5f, 0.5f, 0.5f));
 	gameObject->GetTransform()->SetPosition(Vector3D(-4.0f, 0.5f, 10.0f));
 	gameObject->GetTransform()->SetRotation(Vector3D(0.0f, 0.0f, 0.0f));
@@ -670,17 +666,6 @@ void Application::Cleanup()
 			}
 		}
 	}
-
-	if (Debugger) 
-	{
-		delete Debugger;
-		Debugger = nullptr;
-	}
-
-	if (baseTransform) {
-		delete baseTransform;
-		baseTransform = nullptr;
-	}
 }
 
 void Application::moveForward(int objectNumber)
@@ -718,7 +703,7 @@ void Application::Update()
 	{
 		if (GetAsyncKeyState('1'))
 		{
-			Debugger->DebugMsg("Key 1 pressed.");
+			Debug::DebugMsg("Key 1 pressed.");
 			moveForward(1);
 		}
 		if (GetAsyncKeyState('2'))

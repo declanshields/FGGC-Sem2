@@ -12,6 +12,7 @@ private:
 	Vector3D _position;
 	Vector3D _rotation;
 	Vector3D _scale;
+	Transform* _parent = nullptr;
 	XMFLOAT4X4 _world;
 
 public:
@@ -31,5 +32,9 @@ public:
 
 	void SetWorldMatrix(XMMATRIX worldMatrix) { XMStoreFloat4x4(&_world, worldMatrix); }
 	XMMATRIX GetWorldMatrix() const { return XMLoadFloat4x4(&_world); }
+
+	void Update(float t);
+
+	void SetParent(Transform* parent) { _parent = parent; }
 };
 
