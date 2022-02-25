@@ -37,5 +37,14 @@ void ParticleModel::MoveConstAcceleration(float t)
 
 void ParticleModel::UpdateNetForce()
 {
-	
+	//Calculate external net force
+	netForce.y = -gravity;
+}
+
+void ParticleModel::UpdateAccel()
+{
+	//Calculate acceleration by net external force
+	acceleration.x = netForce.x / mass;
+	acceleration.y = netForce.y / mass;
+	acceleration.z = netForce.z / mass;
 }

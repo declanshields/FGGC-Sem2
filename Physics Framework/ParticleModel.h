@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector3D.h"
+#include "Consts.h"
 
 class GameObject;
 
@@ -11,6 +12,9 @@ private:
 	Vector3D acceleration;
 	Vector3D netForce;
 	float mass;
+
+	//TODO
+	//friction, thrust, brake force
 
 public:
 	ParticleModel(Vector3D vel, Vector3D acc, float m);
