@@ -22,5 +22,6 @@ public:
 	Vector3D operator+(const Vector3D& inputVector);
 	Vector3D operator-(const Vector3D& inputVector);
 	Vector3D operator*(const Vector3D& inputVector);
+	Vector3D operator*(const float t);
 };
 
