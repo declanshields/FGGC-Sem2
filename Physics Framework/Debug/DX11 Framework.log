@@ -1,5 +1,3 @@
-﻿  ParticleModel.cpp
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\ParticleModel.cpp(57,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\ParticleModel.cpp(58,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\ParticleModel.cpp(59,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  DX11 Framework.vcxproj -> C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Debug\DX11 Framework.exe
+﻿  Application.cpp
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(694,21): warning C4244: 'initializing': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+  DX11 Framework.vcxproj -> D:\Github\FGGC-Sem2\Physics Framework\Debug\DX11 Framework.exe

@@ -164,7 +164,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 
     for (auto i = 0; i < NUMBER_OF_CUBES; i++)
 	{
-		gameObject = new GameObject(new Transform(), new Appearance(cubeGeometry, shinyMaterial, "Cube" + i), new ParticleModel(Vector3D(1.0f, 0.0f, 0.0f), Vector3D(0.01f, 0.0f, 0.0f), 5.0f));
+		gameObject = new GameObject(new Transform(), new Appearance(cubeGeometry, shinyMaterial, "Cube" + i), new ParticleModel(Vector3D(5.0f, 0.0f, 0.0f), Vector3D(0.01f, 0.0f, 0.0f), 5.0f));
 		gameObject->GetParticleModel()->SetObject(gameObject);
 		gameObject->GetTransform()->SetScale(Vector3D(0.5f, 0.5f, 0.5f));
 		gameObject->GetTransform()->SetPosition(Vector3D(-4.0f + (i * 2.0f), 0.5f, 10.0f));	
@@ -173,7 +173,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 
 		_gameObjects.push_back(gameObject);
 	}
-	gameObject = new GameObject(new Transform() , new Appearance(herculesGeometry, shinyMaterial, "donut"), new ParticleModel(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.01f, 0.0f, 0.0f), 1.0f));
+	gameObject = new GameObject(new Transform() , new Appearance(herculesGeometry, shinyMaterial, "donut"), new ParticleModel(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(5.0f, 0.0f, 0.0f), 1.0f));
 	gameObject->GetParticleModel()->SetObject(gameObject);
 	gameObject->GetTransform()->SetScale(Vector3D(0.5f, 0.5f, 0.5f));
 	gameObject->GetTransform()->SetPosition(Vector3D(-4.0f, 0.5f, 10.0f));
@@ -725,13 +725,26 @@ void Application::Update()
 		}
 		if (GetAsyncKeyState('4'))
 		{
-			//moveBackward(4);
+			moveBackward(4);
 		}
 
-		if (loopConstVel)
-			_gameObjects[1]->GetParticleModel()->MoveConstVelocity(deltaTime);
-		if (loopConstAcc)
-			_gameObjects[2]->GetParticleModel()->MoveConstAcceleration(deltaTime);
+		//if (loopConstVel)
+			//_gameObjects[1]->GetParticleModel()->MoveConstVelocity(deltaTime);
+		//if (loopConstAcc)
+			//_gameObjects[2]->GetParticleModel()->MoveConstAcceleration(deltaTime);
+
+		if (GetKeyState('W') & 0x8000)
+		{
+			Vector3D acceleration = _gameObjects[1]->GetParticleModel()->GetAcceleration();
+			acceleration.x += 0.1f;
+			_gameObjects[1]->GetParticleModel()->SetAcceleration(acceleration);
+		}
+		if (GetKeyState('S') & 0x8000)
+		{
+			Vector3D acceleration = _gameObjects[1]->GetParticleModel()->GetAcceleration();
+			acceleration.x -= 0.1f;
+			_gameObjects[1]->GetParticleModel()->SetAcceleration(acceleration);
+		}
 	}
 
 	// Update camera
