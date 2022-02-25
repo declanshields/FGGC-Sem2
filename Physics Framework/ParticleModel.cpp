@@ -49,7 +49,32 @@ void ParticleModel::UpdateAccel()
 	acceleration.z = netForce.z / mass;
 }
 
-void ParticleModel::Move()
+void ParticleModel::Move(float t)
 {
-	
+	//update world position
+	Vector3D position = thisObject->GetTransform()->GetPosition();
+
+	position.x = position.x + velocity.x * t + 0.5 * acceleration.x * t * t;
+	position.y = position.y + velocity.y * t + 0.5 * acceleration.y * t * t;
+	position.z = position.z + velocity.z * t + 0.5 * acceleration.z * t * t;
+
+	if (position.y <= 0.5f)
+		position.y = 0.5f;
+
+	//update velocity
+	velocity.x = velocity.x + acceleration.x * t;
+	velocity.y = velocity.y + acceleration.y * t;
+	velocity.z = velocity.z + acceleration.z * t;
+}
+
+void ParticleModel::UpdateState(float t)
+{
+	//Calculate external net force
+	UpdateNetForce();
+
+	//Update acceleration of object using Newton's second law of motion
+	UpdateAccel();
+
+	//Update world position and velocity
+	Move(t);
 }

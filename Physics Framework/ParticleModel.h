@@ -34,8 +34,8 @@ public:
 
 	void SetObject(GameObject* object) { thisObject = object; }
 
-	void UpdateState();
+	void UpdateState(float t);
 	void UpdateNetForce();
 	void UpdateAccel();
-	void Move();
+	void Move(float t);
 };
