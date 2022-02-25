@@ -4,4 +4,5 @@ C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(6
   Main.cpp
   ParticleModel.cpp
   Generating Code...
+Appearance.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
   DX11 Framework.vcxproj -> C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Debug\DX11 Framework.exe

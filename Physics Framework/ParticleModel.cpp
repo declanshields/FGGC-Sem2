@@ -48,3 +48,8 @@ void ParticleModel::UpdateAccel()
 	acceleration.y = netForce.y / mass;
 	acceleration.z = netForce.z / mass;
 }
+
+void ParticleModel::Move()
+{
+	
+}
