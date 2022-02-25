@@ -153,7 +153,8 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	noSpecMaterial.specular = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
 	noSpecMaterial.specularPower = 0.0f;
 	
-	GameObject * gameObject = new GameObject(new Transform(), new Appearance(planeGeometry, noSpecMaterial, "Floor"), new ParticleModel());
+	GameObject * gameObject = new GameObject(new Transform(), new Appearance(planeGeometry, noSpecMaterial, "Floor"), new ParticleModel(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), 0.0f));
+	gameObject->GetParticleModel()->SetObject(gameObject);
 	gameObject->GetTransform()->SetPosition(Vector3D(0.0f, 0.0f, 0.0f));
 	gameObject->GetTransform()->SetScale(Vector3D(15.0f, 15.0f, 15.0f));
 	gameObject->GetTransform()->SetRotation(Vector3D(XMConvertToRadians(90.0f), 0.0f, 0.0f));
@@ -163,7 +164,8 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 
     for (auto i = 0; i < NUMBER_OF_CUBES; i++)
 	{
-		gameObject = new GameObject(new Transform(), new Appearance(cubeGeometry, shinyMaterial, "Cube" + i), new ParticleModel());
+		gameObject = new GameObject(new Transform(), new Appearance(cubeGeometry, shinyMaterial, "Cube" + i), new ParticleModel(Vector3D(1.0f, 0.0f, 0.0f), Vector3D(0.01f, 0.0f, 0.0f), 5.0f));
+		gameObject->GetParticleModel()->SetObject(gameObject);
 		gameObject->GetTransform()->SetScale(Vector3D(0.5f, 0.5f, 0.5f));
 		gameObject->GetTransform()->SetPosition(Vector3D(-4.0f + (i * 2.0f), 0.5f, 10.0f));	
 		gameObject->GetTransform()->SetRotation(Vector3D(0.0f, 0.0f, 0.0f));
@@ -171,7 +173,8 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 
 		_gameObjects.push_back(gameObject);
 	}
-	gameObject = new GameObject(new Transform() , new Appearance(herculesGeometry, shinyMaterial, "donut"), new ParticleModel());
+	gameObject = new GameObject(new Transform() , new Appearance(herculesGeometry, shinyMaterial, "donut"), new ParticleModel(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.01f, 0.0f, 0.0f), 1.0f));
+	gameObject->GetParticleModel()->SetObject(gameObject);
 	gameObject->GetTransform()->SetScale(Vector3D(0.5f, 0.5f, 0.5f));
 	gameObject->GetTransform()->SetPosition(Vector3D(-4.0f, 0.5f, 10.0f));
 	gameObject->GetTransform()->SetRotation(Vector3D(0.0f, 0.0f, 0.0f));
@@ -701,24 +704,34 @@ void Application::Update()
 	// Move gameobject
 	if (_gameObjects.size() != 0) 
 	{
-		if (GetAsyncKeyState('1'))
+		if (GetKeyState('1') & 0x8000)
 		{
 			Debug::DebugMsg("Key 1 pressed.");
 			moveForward(1);
 		}
 		if (GetAsyncKeyState('2'))
 		{
-			moveForward(2);
+			loopConstVel = !loopConstVel;
+
+			Debug::DebugMsg("Key 2 pressed.");
 		}
 
 		if (GetAsyncKeyState('3'))
 		{
-			moveBackward(3);
+			//moveBackward(3);
+			loopConstAcc = !loopConstAcc;
+
+			Debug::DebugMsg("Key 3 pressed");
 		}
 		if (GetAsyncKeyState('4'))
 		{
-			moveBackward(4);
+			//moveBackward(4);
 		}
+
+		if (loopConstVel)
+			_gameObjects[1]->GetParticleModel()->MoveConstVelocity(deltaTime);
+		if (loopConstAcc)
+			_gameObjects[2]->GetParticleModel()->MoveConstAcceleration(deltaTime);
 	}
 
 	// Update camera
