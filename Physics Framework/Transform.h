@@ -3,6 +3,7 @@
 #include <d3d11_1.h>
 #include<DirectXMath.h>
 #include "Vector3D.h"
+#include "Structures.h"
 
 using namespace DirectX;
 
@@ -14,6 +15,7 @@ private:
 	Vector3D _scale;
 	Transform* _parent = nullptr;
 	XMFLOAT4X4 _world;
+	SimpleVertex vertices[]; 
 
 public:
 	Transform(Vector3D position, Vector3D rotation, Vector3D scale);

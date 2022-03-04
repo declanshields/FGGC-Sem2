@@ -711,29 +711,38 @@ void Application::Update()
 			Debug::DebugMsg("Key 1 pressed.");
             moveForward(1);
 		}
-		if (GetAsyncKeyState('2'))
+		if (GetAsyncKeyState('2') & 0x8000)
 		{
 			while (GetAsyncKeyState('2') & 0x8000);
 			loopConstVel = !loopConstVel;
 		}
 
-		if (GetAsyncKeyState('3'))
+		if (GetAsyncKeyState('3') & 0x8000)
 		{
 			while (GetAsyncKeyState('3') & 0x8000);
 			loopConstAcc = !loopConstAcc;
 
 			Debug::DebugMsg("Key 3 pressed");
 		}
-		if (GetAsyncKeyState('4'))
+		if (GetAsyncKeyState('4') & 0x8000)
 		{
 			while (GetAsyncKeyState('4') & 0x8000);
 			moveBackward(4);
+		}
+		if (GetAsyncKeyState('5') & 0x8000)
+		{
+			while (GetAsyncKeyState('5') & 0x8000);
+			rotate = !rotate;
 		}
 
 		if (loopConstVel)
 			_gameObjects[1]->GetParticleModel()->MoveConstVelocity(deltaTime);
 		if (loopConstAcc)
 			_gameObjects[1]->GetParticleModel()->MoveConstAcceleration(deltaTime);
+		if (rotate)
+		{
+
+		}
 
 		if (GetKeyState('W') & 0x8000)
 		{
