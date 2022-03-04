@@ -103,7 +103,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 
 	CreateDDSTextureFromFile(_pd3dDevice, L"Resources\\stone.dds", nullptr, &_pTextureRV);
 	CreateDDSTextureFromFile(_pd3dDevice, L"Resources\\floor.dds", nullptr, &_pGroundTextureRV);
-	//CreateDDSTextureFromFile(_pd3dDevice, L"Resources\\Hercules_COLOR.dds", nullptr, &_pHerculesTextureRV);
+	CreateDDSTextureFromFile(_pd3dDevice, L"Resources\\Hercules_COLOR.dds", nullptr, &_pHerculesTextureRV);
 	
     // Setup Camera
 	XMFLOAT3 eye = XMFLOAT3(0.0f, 2.0f, -1.0f);
@@ -164,7 +164,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 
     for (auto i = 0; i < NUMBER_OF_CUBES; i++)
 	{
-		gameObject = new GameObject(new Transform(), new Appearance(cubeGeometry, shinyMaterial, "Cube" + i), new ParticleModel(Vector3D(5.0f, 0.0f, 0.0f), Vector3D(0.01f, 0.0f, 0.0f), 5.0f));
+		gameObject = new GameObject(new Transform(), new Appearance(cubeGeometry, shinyMaterial, "Cube" + i), new ParticleModel(Vector3D(1.0f, 0.0f, 0.0f), Vector3D(1.0f, 0.0f, 0.0f), 1.0f));
 		gameObject->GetParticleModel()->SetObject(gameObject);
 		gameObject->GetTransform()->SetScale(Vector3D(0.5f, 0.5f, 0.5f));
 		gameObject->GetTransform()->SetPosition(Vector3D(-4.0f + (i * 2.0f), 0.5f, 10.0f));	
@@ -173,7 +173,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 
 		_gameObjects.push_back(gameObject);
 	}
-	gameObject = new GameObject(new Transform() , new Appearance(herculesGeometry, shinyMaterial, "donut"), new ParticleModel(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(5.0f, 0.0f, 0.0f), 1.0f));
+	gameObject = new GameObject(new Transform() , new Appearance(herculesGeometry, shinyMaterial, "donut"), new ParticleModel(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), 1.0f));
 	gameObject->GetParticleModel()->SetObject(gameObject);
 	gameObject->GetTransform()->SetScale(Vector3D(0.5f, 0.5f, 0.5f));
 	gameObject->GetTransform()->SetPosition(Vector3D(-4.0f, 0.5f, 10.0f));
@@ -696,7 +696,7 @@ void Application::Update()
     if (dwTimeStart == 0)
         dwTimeStart = dwTimeCur;
 
-	deltaTime += (dwTimeCur - dwTimeStart) / 1000.0f;
+	deltaTime = (dwTimeCur - dwTimeStart) / 1000.0f;
 
 	if (deltaTime < FPS_60)
 		return;
@@ -704,34 +704,36 @@ void Application::Update()
 	// Move gameobject
 	if (_gameObjects.size() != 0) 
 	{
-		if (GetKeyState('1') & 0x8000)
+		if ((GetAsyncKeyState('1') & 0x8000))
 		{
+			//loops nothing until key is depressed
+			while (GetAsyncKeyState('1') & 0x8000);
 			Debug::DebugMsg("Key 1 pressed.");
-			moveForward(1);
+            moveForward(1);
 		}
 		if (GetAsyncKeyState('2'))
 		{
+			while (GetAsyncKeyState('2') & 0x8000);
 			loopConstVel = !loopConstVel;
-
-			Debug::DebugMsg("Key 2 pressed.");
 		}
 
 		if (GetAsyncKeyState('3'))
 		{
-			//moveBackward(3);
+			while (GetAsyncKeyState('3') & 0x8000);
 			loopConstAcc = !loopConstAcc;
 
 			Debug::DebugMsg("Key 3 pressed");
 		}
 		if (GetAsyncKeyState('4'))
 		{
+			while (GetAsyncKeyState('4') & 0x8000);
 			moveBackward(4);
 		}
 
-		//if (loopConstVel)
-			//_gameObjects[1]->GetParticleModel()->MoveConstVelocity(deltaTime);
-		//if (loopConstAcc)
-			//_gameObjects[2]->GetParticleModel()->MoveConstAcceleration(deltaTime);
+		if (loopConstVel)
+			_gameObjects[1]->GetParticleModel()->MoveConstVelocity(deltaTime);
+		if (loopConstAcc)
+			_gameObjects[1]->GetParticleModel()->MoveConstAcceleration(deltaTime);
 
 		if (GetKeyState('W') & 0x8000)
 		{
