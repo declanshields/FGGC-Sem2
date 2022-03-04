@@ -9,3 +9,13 @@ void Debug::DebugMsg(const std::string message)
 
 	OutputDebugStringA(sz);
 }
+
+void Debug::DebugMsg(const Vector3D vec3)
+{
+	CHAR sz[2048] = { 0 };
+	std::string message;
+	message = "X: " + std::to_string(vec3.x) + " Y: " + std::to_string(vec3.y) + " Z: " + std::to_string(vec3.z);
+	int success = sprintf(sz, "Position: %s\n", message.c_str());
+
+	OutputDebugStringA(sz);
+}

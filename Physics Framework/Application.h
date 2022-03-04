@@ -97,8 +97,12 @@ private:
 	ID3D11RasterizerState* CCWcullMode;
 	ID3D11RasterizerState* CWcullMode;
 
-	bool loopConstVel = true;
-	bool loopConstAcc = true;
+	//bools for loops
+	bool loopConstVel = false;
+	bool loopConstAcc = false;
+
+	//var for key press, is 0 if no key is down, is 1 while key is down
+	int keyPressed = 0;
 
 private:
 	HRESULT InitWindow(HINSTANCE hInstance, int nCmdShow);

@@ -26,6 +26,7 @@ GameObject::~GameObject()
 
 void GameObject::Update(float t)
 {
+	//_particleModel->UpdateState(t);
 	_transform->Update(t);
 }
 
