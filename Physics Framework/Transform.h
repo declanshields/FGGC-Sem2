@@ -14,6 +14,7 @@ private:
 	Vector3D _scale;
 	Transform* _parent = nullptr;
 	XMFLOAT4X4 _world;
+	Vector3D _centerOfMass;
 
 public:
 	Transform(Vector3D position, Vector3D rotation, Vector3D scale);
@@ -24,7 +25,7 @@ public:
 	void SetPosition(Vector3D position) { _position = position; }
 	Vector3D GetPosition() const { return _position; }
 
-	void SetScale(Vector3D scale) { _scale = scale; }
+	void SetScale(Vector3D scale);
 	Vector3D GetScale() const { return _scale; }
 
 	void SetRotation(Vector3D rotation) { _rotation = rotation; }
@@ -36,5 +37,8 @@ public:
 	void Update(float t);
 
 	void SetParent(Transform* parent) { _parent = parent; }
+
+	void SetCenterOfMass(Vector3D _com) { _centerOfMass = _com; }
+	Vector3D GetCenterOfMass() { return _centerOfMass; }
 };
 

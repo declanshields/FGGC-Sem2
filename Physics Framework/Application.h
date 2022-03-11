@@ -10,6 +10,7 @@
 #include "Camera.h"
 #include "Structures.h"
 #include "OBJLoader.h"
+#include <string>
 
 #include <vector>
 /*
@@ -100,6 +101,9 @@ private:
 	//bools for loops
 	bool loopConstVel = false;
 	bool loopConstAcc = false;
+
+	Vector3D cubeCenterOfMass;
+	Vector3D planeCenterOfMass;
 
 	//var for key press, is 0 if no key is down, is 1 while key is down
 	int keyPressed = 0;

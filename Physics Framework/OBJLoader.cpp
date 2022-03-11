@@ -65,7 +65,7 @@ void OBJLoader::CreateIndices(const std::vector<XMFLOAT3>& inVertices,
 //WARNING: This code makes a big assumption -- that your models have texture coordinates AND normals which they should have anyway (else you can't do texturing and lighting!)
 //If your .obj file has no lines beginning with "vt" or "vn", then you'll need to change the Export settings in your modelling software so that it exports the texture coordinates 
 //and normals. If you still have no "vt" lines, you'll need to do some texture unwrapping, also known as UV unwrapping.
-MeshData OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertTexCoords)
+MeshData OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, std::vector<XMFLOAT3>& vertices, bool invertTexCoords)
 {
 	std::string binaryFilename = filename;
 	binaryFilename.append("Binary");
@@ -166,6 +166,8 @@ MeshData OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 				}
 			}
 			inFile.close(); //Finished with input file now, all the data we need has now been loaded in
+
+			vertices = verts;
 
 			//Get vectors to be of same size, ready for singular indexing
 			std::vector<XMFLOAT3> expandedVertices;
@@ -276,6 +278,11 @@ MeshData OBJLoader::Load(char* filename, ID3D11Device* _pd3dDevice, bool invertT
 		unsigned short* indices = new unsigned short[numIndices];
 		binaryInFile.read((char*)finalVerts, sizeof(SimpleVertex) * numVertices);
 		binaryInFile.read((char*)indices, sizeof(unsigned short) * numIndices);
+
+		for (int i = 0; i < numVertices; i++)
+		{
+			vertices.push_back(finalVerts[i].Pos);
+		}
 
 		//Put data into vertex and index buffers, then pass the relevant data to the MeshData object.
 		//The rest of the code will hopefully look familiar to you, as it's similar to whats in your InitVertexBuffer and InitIndexBuffer methods

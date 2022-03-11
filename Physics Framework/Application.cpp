@@ -120,12 +120,22 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	basicLight.LightVecW = XMFLOAT3(0.0f, 1.0f, -1.0f);
 
 	Geometry herculesGeometry;
-	objMeshData = OBJLoader::Load("donut.obj", _pd3dDevice);
+	std::vector<XMFLOAT3> herculesVertices;
+	objMeshData = OBJLoader::Load("donut.obj", _pd3dDevice, herculesVertices);
 	herculesGeometry.indexBuffer = objMeshData.IndexBuffer;
 	herculesGeometry.numberOfIndices = objMeshData.IndexCount;
 	herculesGeometry.vertexBuffer = objMeshData.VertexBuffer;
 	herculesGeometry.vertexBufferOffset = objMeshData.VBOffset;
 	herculesGeometry.vertexBufferStride = objMeshData.VBStride;
+
+	Vector3D herculesCenterOfMass = Vector3D();
+	//loop through vector to find center of mass
+	for (int i = 0; i < herculesVertices.size(); i++)
+	{
+		herculesCenterOfMass.x += herculesVertices[i].x;
+		herculesCenterOfMass.y += herculesVertices[i].y;
+		herculesCenterOfMass.z += herculesVertices[i].z;
+	}
 	
 	Geometry cubeGeometry;
 	cubeGeometry.indexBuffer = _pIndexBuffer;
@@ -179,7 +189,29 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	gameObject->GetTransform()->SetPosition(Vector3D(-4.0f, 0.5f, 10.0f));
 	gameObject->GetTransform()->SetRotation(Vector3D(0.0f, 0.0f, 0.0f));
 	gameObject->GetAppearance()->SetTextureRV(_pTextureRV);
+	gameObject->GetTransform()->SetCenterOfMass(herculesCenterOfMass / herculesVertices.size());
+	Debug::DebugMsg(gameObject->GetTransform()->GetCenterOfMass());
 	_gameObjects.push_back(gameObject);
+
+	herculesVertices.clear();
+
+	for (int i = 0; i < _gameObjects.size(); i++)
+	{
+		if (_gameObjects[i]->GetAppearance()->GetType().find("Cube") != std::string::npos)
+		{
+			_gameObjects[i]->GetTransform()->SetCenterOfMass(cubeCenterOfMass / 24);
+			Debug::DebugMsg(_gameObjects[i]->GetTransform()->GetCenterOfMass());
+		}
+	}
+
+	for (int i = 0; i < _gameObjects.size(); i++)
+	{
+		if (_gameObjects[i]->GetAppearance()->GetType() == "Floor")
+		{
+			_gameObjects[i]->GetTransform()->SetCenterOfMass(planeCenterOfMass / 4);
+			Debug::DebugMsg(_gameObjects[i]->GetTransform()->GetCenterOfMass());
+		}
+	}
 
 	return S_OK;
 }
@@ -299,6 +331,13 @@ HRESULT Application::InitVertexBuffer()
 		{ XMFLOAT3(-1.0f, 1.0f, 1.0f), XMFLOAT3(-1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f) },
     };
 
+	for (int i = 0; i < 24; i++)
+	{
+		cubeCenterOfMass.x += vertices[i].Pos.x;
+		cubeCenterOfMass.y += vertices[i].Pos.y;
+		cubeCenterOfMass.z += vertices[i].Pos.z;
+	}
+
     D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
     bd.Usage = D3D11_USAGE_DEFAULT;
@@ -323,6 +362,13 @@ HRESULT Application::InitVertexBuffer()
 		{ XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, -1.0f), XMFLOAT2(5.0f, 0.0f) },
 		{ XMFLOAT3(-1.0f, 1.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, -1.0f), XMFLOAT2(0.0f, 0.0f) },
 	};
+
+	for (int i = 0; i < 4; i++)
+	{
+		planeCenterOfMass.x += planeVertices[i].Pos.x;
+		planeCenterOfMass.y += planeVertices[i].Pos.y;
+		planeCenterOfMass.z += planeVertices[i].Pos.z;
+	}
 
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage = D3D11_USAGE_DEFAULT;

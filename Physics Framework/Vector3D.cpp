@@ -95,3 +95,14 @@ Vector3D Vector3D::operator*(const float t)
 
 	return product;
 }
+
+Vector3D Vector3D::operator/(const float t)
+{
+	Vector3D product;
+
+	product.x = x / t;
+	product.y = y / t;
+	product.z = z / t;
+
+	return product;
+}

@@ -37,3 +37,12 @@ Transform::~Transform()
         _parent = nullptr;
     }
 }
+
+void Transform::SetScale(Vector3D scale)
+{
+    _scale = scale;
+
+    _centerOfMass.x *= _scale.x;
+    _centerOfMass.y *= _scale.y;
+    _centerOfMass.z *= _scale.z;
+}
