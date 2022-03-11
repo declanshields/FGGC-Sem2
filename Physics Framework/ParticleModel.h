@@ -10,6 +10,7 @@ private:
 	GameObject* thisObject = nullptr;
 	Vector3D velocity;
 	Vector3D acceleration;
+	Vector3D thrust;
 	Vector3D netForce;
 	float mass;
 
@@ -31,6 +32,8 @@ public:
 
 	float GetMass() { return mass; }
 	void SetMass(float m) { mass = m; }
+
+	void SetThrust(Vector3D _thrust) { thrust = _thrust; }
 
 	void SetObject(GameObject* object) { thisObject = object; }
 

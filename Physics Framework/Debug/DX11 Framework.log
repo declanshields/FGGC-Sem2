@@ -1,3 +1,5 @@
-﻿  OBJLoader.cpp
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\OBJLoader.cpp(282,21): warning C4018: '<': signed/unsigned mismatch
+﻿  ParticleModel.cpp
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\ParticleModel.cpp(101,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\ParticleModel.cpp(102,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\ParticleModel.cpp(103,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   DX11 Framework.vcxproj -> C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Debug\DX11 Framework.exe

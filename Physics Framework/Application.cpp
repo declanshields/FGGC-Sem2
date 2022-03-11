@@ -785,7 +785,8 @@ void Application::Update()
 		{
 			Vector3D acceleration = _gameObjects[1]->GetParticleModel()->GetAcceleration();
 			acceleration.x += 0.1f;
-			_gameObjects[1]->GetParticleModel()->SetAcceleration(acceleration);
+			_gameObjects[1]->GetParticleModel()->SetThrust(Vector3D(5.0f, 0.0f, 0.0f));
+			_gameObjects[1]->GetParticleModel()->UpdateState(deltaTime);
 		}
 		if (GetKeyState('S') & 0x8000)
 		{
