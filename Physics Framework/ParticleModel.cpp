@@ -44,6 +44,7 @@ void ParticleModel::UpdateNetForce()
 		netForce.y = netForce.y - (mass * gravity);
 
 	netForce = netForce + thrust;
+	netForce = netForce + lift;
 
 	//calculate friction if thrust is > 0
 	if (thrust.x > 0 || thrust.y > 0 || thrust.z > 0)

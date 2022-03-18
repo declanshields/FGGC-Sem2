@@ -8,14 +8,15 @@ class ParticleModel
 {
 private:
 	GameObject* thisObject = nullptr;
-	Vector3D velocity;
-	Vector3D acceleration;
-	Vector3D thrust;
-	Vector3D netForce;
-	float mass;
+	Vector3D velocity      = { 0.0f, 0.0f, 0.0f };
+	Vector3D acceleration  = { 0.0f, 0.0f, 0.0f };
 
-	//TODO
-	//friction, thrust, brake force
+	//forces
+	Vector3D thrust   = { 0.0f, 0.0f, 0.0f };
+	Vector3D netForce = { 0.0f, 0.0f, 0.0f };
+	Vector3D lift     = { 0.0f, 0.0f, 0.0f };
+
+	float mass = 0.0f;
 
 public:
 	ParticleModel(Vector3D vel, Vector3D acc, float m);
@@ -34,6 +35,7 @@ public:
 	void SetMass(float m) { mass = m; }
 
 	void SetThrust(Vector3D _thrust) { thrust = _thrust; }
+	void SetLift(Vector3D _lift) { lift = _lift; }
 
 	void SetObject(GameObject* object) { thisObject = object; }
 

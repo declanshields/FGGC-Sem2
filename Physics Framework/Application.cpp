@@ -746,6 +746,8 @@ void Application::Update()
 
 	if (deltaTime < FPS_60)
 		return;
+	if (deltaTime > 1.0f)
+		deltaTime = FPS_60;
 
 	// Move gameobject
 	if (_gameObjects.size() != 0) 
@@ -783,8 +785,6 @@ void Application::Update()
 
 		if (GetKeyState('W') & 0x8000)
 		{
-			Vector3D acceleration = _gameObjects[1]->GetParticleModel()->GetAcceleration();
-			acceleration.x += 0.1f;
 			_gameObjects[1]->GetParticleModel()->SetThrust(Vector3D(5.0f, 0.0f, 0.0f));
 			_gameObjects[1]->GetParticleModel()->UpdateState(deltaTime);
 		}
