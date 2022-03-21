@@ -1,3 +1,17 @@
-﻿  ParticleSystem.cpp
-Appearance.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
-  DX11 Framework.vcxproj -> C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Debug\DX11 Framework.exe
+﻿  Application.cpp
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(133,20): warning C4018: '<': signed/unsigned mismatch
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(192,90): warning C4244: 'argument': conversion from 'unsigned int' to 'const float', possible loss of data
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(198,20): warning C4018: '<': signed/unsigned mismatch
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(207,20): warning C4018: '<': signed/unsigned mismatch
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(742,21): warning C4244: 'initializing': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+  Main.cpp
+  ParticleSystem.cpp
+D:\Github\FGGC-Sem2\Physics Framework\ParticleSystem.cpp(48,3): warning C5205: delete of an abstract class 'ID3D11ShaderResourceView' that has a non-virtual destructor results in undefined behavior
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\d3d11.h(3618): message : see declaration of 'ID3D11ShaderResourceView'
+D:\Github\FGGC-Sem2\Physics Framework\ParticleSystem.cpp(81,43): warning C4316: 'Particle': object allocated on the heap may not be aligned 16
+D:\Github\FGGC-Sem2\Physics Framework\ParticleSystem.cpp(99,3): warning C5205: delete of an abstract class 'ID3D11Device' that has a non-virtual destructor results in undefined behavior
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\d3d11.h(13560): message : see declaration of 'ID3D11Device'
+D:\Github\FGGC-Sem2\Physics Framework\ParticleSystem.cpp(105,3): warning C5205: delete of an abstract class 'ID3D11DeviceContext' that has a non-virtual destructor results in undefined behavior
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\d3d11.h(7483): message : see declaration of 'ID3D11DeviceContext'
+  Generating Code...
+  DX11 Framework.vcxproj -> D:\Github\FGGC-Sem2\Physics Framework\Debug\DX11 Framework.exe

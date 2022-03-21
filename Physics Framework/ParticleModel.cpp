@@ -35,6 +35,25 @@ void ParticleModel::MoveConstAcceleration(float t)
 	velocity = velocity + (acceleration * t);
 }
 
+void ParticleModel::Lift(float t)
+{
+	Vector3D weight = { 0.0f, -(mass * gravity), 0.0f };
+	Vector3D upForce;
+
+	if (thisObject->GetTransform()->GetPosition().y >= 0.5f)
+		upForce = { 0.0f, 0.0f, 0.0f };
+	else
+	{
+		upForce = weight;
+		upForce.y = -upForce.y;
+	}
+
+	netForce = netForce + upForce;
+
+	UpdateState(t);
+}
+
+
 void ParticleModel::UpdateNetForce()
 {
 	//Calculate external net force
@@ -45,6 +64,7 @@ void ParticleModel::UpdateNetForce()
 
 	netForce = netForce + thrust;
 	netForce = netForce + lift;
+	netForce = netForce + drag;
 
 	//calculate friction if thrust is > 0
 	if (thrust.x > 0 || thrust.y > 0 || thrust.z > 0)
@@ -126,4 +146,47 @@ void ParticleModel::UpdateState(float t)
 
 	//Update world position and velocity
 	Move(t);
+}
+
+void ParticleModel::MotionInFluid(float t)
+{
+	DragForce();
+	UpdateState(t);
+}
+
+void ParticleModel::DragForce()
+{
+	if(laminar)
+	{
+		DragLaminarFlow();
+	}
+	else
+	{
+		DragTurbulentFlow();
+	}
+}
+
+void ParticleModel::DragLaminarFlow()
+{
+	dragFactor = 0.5f * air_density * (velocity.CalcMagnitude() * velocity.CalcMagnitude()) * cube_damping * thisObject->GetTransform()->GetCrossSection();
+
+	drag.x = -dragFactor * velocity.x;
+	drag.y = -dragFactor * velocity.y;
+	drag.z = -dragFactor * velocity.z;
+}
+
+void ParticleModel::DragTurbulentFlow()
+{
+	dragFactor = 0.5f * air_density * (velocity.CalcMagnitude() * velocity.CalcMagnitude()) * cube_damping * thisObject->GetTransform()->GetCrossSection();
+
+	float velocityMagnitude = velocity.CalcMagnitude();
+	Vector3D unitVelocity;
+	velocity.Normalize();
+	unitVelocity = velocity;
+
+	float dragMagnitude = dragFactor * velocityMagnitude * velocityMagnitude;
+
+	drag.x = -dragMagnitude * unitVelocity.x;
+	drag.y = -dragMagnitude * unitVelocity.y;
+	drag.z = -dragMagnitude * unitVelocity.z;
 }

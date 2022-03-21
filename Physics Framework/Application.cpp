@@ -213,6 +213,8 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 		}
 	}
 
+	particleManager = new ParticleSystem(100, cubeGeometry, _pImmediateContext, _pd3dDevice, _gameObjects[1]->GetTransform()->GetPosition());
+
 	return S_OK;
 }
 
@@ -818,6 +820,8 @@ void Application::Update()
 		}
 	}
 
+	particleManager->Update(deltaTime);
+
 	dwTimeStart = dwTimeCur;
 	deltaTime = deltaTime - FPS_60;
 }
@@ -893,6 +897,37 @@ void Application::Draw()
 			gameObject->Draw(_pImmediateContext);
 		}
 	}
+
+	int currentParticles = sizeof(particleManager->GetArray()) / sizeof(particleManager->GetArray()[0]);
+	for (int i = 0; i < currentParticles; i++)
+	{
+		if (particleManager->GetArray()[i].GetLifespan() > 0.0f)
+		{
+			Material material = particleManager->GetArray()->GetMaterial();
+
+			cb.surface.AmbientMtrl = material.ambient;
+			cb.surface.DiffuseMtrl = material.diffuse;
+			cb.surface.SpecularMtrl = material.specular;
+
+			cb.World = XMMatrixTranspose(particleManager->GetArray()->GetTransform()->GetWorldMatrix());
+
+			if (particleManager->GetArray()->GetAppearance()->HasTexture())
+			{
+				ID3D11ShaderResourceView* textureRV = particleManager->GetArray()->GetAppearance()->GetTextureRV();
+				_pImmediateContext->PSSetShaderResources(0, 1, &textureRV);
+				cb.HasTexture = 1.0f;
+			}
+			else
+			{
+				cb.HasTexture = 0.0f;
+			}
+
+			_pImmediateContext->UpdateSubresource(_pConstantBuffer, 0, nullptr, &cb, 0, 0);
+
+			particleManager->Draw();
+		}
+	}
+
 
     //
     // Present our back buffer to our front buffer
