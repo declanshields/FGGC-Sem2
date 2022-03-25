@@ -43,7 +43,11 @@ GameObject::~GameObject()
 
 void GameObject::Update(float t)
 {
-	//_particleModel->UpdateState(t);
+	//if(_appearance->GetType() == "Particle")
+	//	_particleModel->UpdateState(t);
+	//else
+	//	_transform->Update(t);
+
 	_transform->Update(t);
 }
 

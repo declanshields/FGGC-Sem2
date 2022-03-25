@@ -213,7 +213,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 		}
 	}
 
-	particleManager = new ParticleSystem(100, new Transform(), new Appearance(cubeGeometry, shinyMaterial, "Particle"), );
+	particleManager = new ParticleSystem(100, new Transform(), new Appearance(cubeGeometry, shinyMaterial, "Particle"), new ParticleModel(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), 0.0f), Vector3D(-4.0f, 0.5f, 10.0f), _pImmediateContext, _pd3dDevice);
 
 	return S_OK;
 }
@@ -903,7 +903,7 @@ void Application::Draw()
 	{
 		if (particleManager->GetArray()[i]->GetLifespan() > 0.0f)
 		{
-			Material material = particleManager->GetArray()[i]->GetMaterial();
+			Material material = particleManager->GetArray()[i]->GetAppearance()->GetMaterialData();
 
 			cb.surface.AmbientMtrl = material.ambient;
 			cb.surface.DiffuseMtrl = material.diffuse;

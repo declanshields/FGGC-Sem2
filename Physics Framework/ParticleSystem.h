@@ -2,6 +2,7 @@
 
 #include <DirectXMath.h>
 #include <d3d11_1.h>
+#include <time.h>
 
 #include "GameObject.h"
 
@@ -15,7 +16,7 @@ using namespace DirectX;
 class ParticleSystem
 {
 public:
-	ParticleSystem(int particleCount, Transform* transform, Appearance* appearance, ParticleModel* particleModel, const Vector3D position, ID3D11DeviceContext* device, ID3D11Device* device);
+	ParticleSystem(int particleCount, Transform* transform, Appearance* appearance, ParticleModel* particleModel, const Vector3D position, ID3D11DeviceContext* context, ID3D11Device* device);
 	~ParticleSystem();
 
 	void Update(float t);
