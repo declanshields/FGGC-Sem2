@@ -1,17 +1,25 @@
 ﻿  Application.cpp
-D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(133,20): warning C4018: '<': signed/unsigned mismatch
-D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(192,90): warning C4244: 'argument': conversion from 'unsigned int' to 'const float', possible loss of data
-D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(198,20): warning C4018: '<': signed/unsigned mismatch
-D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(207,20): warning C4018: '<': signed/unsigned mismatch
-D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(742,21): warning C4244: 'initializing': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(133,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(192,90): warning C4244: 'argument': conversion from 'unsigned int' to 'const float', possible loss of data
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(198,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(207,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(742,21): warning C4244: 'initializing': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+  GameObject.cpp
   Main.cpp
+  ParticleModel.cpp
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\ParticleModel.cpp(22,22): warning C4150: deletion of pointer to incomplete type 'Particle'; no destructor called
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\ParticleModel.h(6): message : see declaration of 'Particle'
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\ParticleModel.cpp(128,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\ParticleModel.cpp(129,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\ParticleModel.cpp(130,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\ParticleModel.cpp(177,105): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\ParticleModel.cpp(186,105): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\ParticleModel.cpp(188,26): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   ParticleSystem.cpp
-D:\Github\FGGC-Sem2\Physics Framework\ParticleSystem.cpp(48,3): warning C5205: delete of an abstract class 'ID3D11ShaderResourceView' that has a non-virtual destructor results in undefined behavior
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\d3d11.h(3618): message : see declaration of 'ID3D11ShaderResourceView'
-D:\Github\FGGC-Sem2\Physics Framework\ParticleSystem.cpp(81,43): warning C4316: 'Particle': object allocated on the heap may not be aligned 16
-D:\Github\FGGC-Sem2\Physics Framework\ParticleSystem.cpp(99,3): warning C5205: delete of an abstract class 'ID3D11Device' that has a non-virtual destructor results in undefined behavior
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\ParticleSystem.cpp(8,61): warning C4100: 'device': unreferenced formal parameter
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\ParticleSystem.cpp(97,3): warning C5205: delete of an abstract class 'ID3D11Device' that has a non-virtual destructor results in undefined behavior
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\d3d11.h(13560): message : see declaration of 'ID3D11Device'
-D:\Github\FGGC-Sem2\Physics Framework\ParticleSystem.cpp(105,3): warning C5205: delete of an abstract class 'ID3D11DeviceContext' that has a non-virtual destructor results in undefined behavior
+C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\ParticleSystem.cpp(103,3): warning C5205: delete of an abstract class 'ID3D11DeviceContext' that has a non-virtual destructor results in undefined behavior
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\d3d11.h(7483): message : see declaration of 'ID3D11DeviceContext'
   Generating Code...
-  DX11 Framework.vcxproj -> D:\Github\FGGC-Sem2\Physics Framework\Debug\DX11 Framework.exe
+  DX11 Framework.vcxproj -> C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Debug\DX11 Framework.exe

@@ -11,7 +11,7 @@ private:
 	Material _material;
 	std::string _type;
 
-	ID3D11ShaderResourceView* _textureRV;
+	ID3D11ShaderResourceView* _textureRV = nullptr;
 
 public:
 	Appearance(Geometry geometry, Material material, std::string type);
@@ -23,7 +23,7 @@ public:
 	std::string GetType() const { return _type; }
 
 	void SetTextureRV(ID3D11ShaderResourceView* textureRV) { _textureRV = textureRV; }
-	ID3D11ShaderResourceView* GetTextureRV() const { return _textureRV; }
+	ID3D11ShaderResourceView* GetTextureRV() { return _textureRV; }
 	bool HasTexture() const { return _textureRV ? true : false; }
 
 	void Draw(ID3D11DeviceContext* pImmediateContext);

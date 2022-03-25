@@ -213,7 +213,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 		}
 	}
 
-	particleManager = new ParticleSystem(100, cubeGeometry, _pImmediateContext, _pd3dDevice, _gameObjects[1]->GetTransform()->GetPosition());
+	particleManager = new ParticleSystem(100, new Transform(), new Appearance(cubeGeometry, shinyMaterial, "Particle"), );
 
 	return S_OK;
 }
@@ -898,22 +898,22 @@ void Application::Draw()
 		}
 	}
 
-	int currentParticles = sizeof(particleManager->GetArray()) / sizeof(particleManager->GetArray()[0]);
+	int currentParticles = particleManager->GetParticleCount();
 	for (int i = 0; i < currentParticles; i++)
 	{
-		if (particleManager->GetArray()[i].GetLifespan() > 0.0f)
+		if (particleManager->GetArray()[i]->GetLifespan() > 0.0f)
 		{
-			Material material = particleManager->GetArray()->GetMaterial();
+			Material material = particleManager->GetArray()[i]->GetMaterial();
 
 			cb.surface.AmbientMtrl = material.ambient;
 			cb.surface.DiffuseMtrl = material.diffuse;
 			cb.surface.SpecularMtrl = material.specular;
 
-			cb.World = XMMatrixTranspose(particleManager->GetArray()->GetTransform()->GetWorldMatrix());
+			cb.World = XMMatrixTranspose(particleManager->GetArray()[i]->GetTransform()->GetWorldMatrix());
 
-			if (particleManager->GetArray()->GetAppearance()->HasTexture())
+			if (particleManager->GetArray()[i]->GetAppearance()->HasTexture())
 			{
-				ID3D11ShaderResourceView* textureRV = particleManager->GetArray()->GetAppearance()->GetTextureRV();
+				ID3D11ShaderResourceView* textureRV = particleManager->GetArray()[i]->GetAppearance()->GetTextureRV();
 				_pImmediateContext->PSSetShaderResources(0, 1, &textureRV);
 				cb.HasTexture = 1.0f;
 			}

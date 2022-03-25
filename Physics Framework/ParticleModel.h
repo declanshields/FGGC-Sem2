@@ -3,11 +3,13 @@
 #include "Consts.h"
 
 class GameObject;
+class Particle;
 
 class ParticleModel
 {
 private:
-	GameObject* thisObject = nullptr;
+	GameObject* thisObject    = nullptr;
+	Particle*   thisParticle  = nullptr;
 	Vector3D    velocity      = { 0.0f, 0.0f, 0.0f };
 	Vector3D    acceleration  = { 0.0f, 0.0f, 0.0f };
 
@@ -35,6 +37,7 @@ public:
 	void SetThrust       (Vector3D _thrust)   { thrust = _thrust; }
 	void SetLift         (Vector3D _lift)     { lift = _lift; }
 	void SetObject       (GameObject* object) { thisObject = object; }
+	void SetParticle     (Particle* particle) { thisParticle = particle; }
 	void SetAcceleration (Vector3D acc)       { acceleration = acc; }
 	void SetVelocity     (Vector3D vel)       { velocity = vel; }
 	void SetLaminar      (bool _laminar)      { laminar = _laminar; }
