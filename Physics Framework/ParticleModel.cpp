@@ -13,7 +13,6 @@ ParticleModel::~ParticleModel()
 {
     if(thisObject != nullptr)
 	{
-		delete thisObject;
 		thisObject = nullptr;
 	}
 }

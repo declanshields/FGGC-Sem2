@@ -112,6 +112,9 @@ private:
 
 	ParticleSystem* particleManager;
 
+	Geometry smokeGeometry;
+	Material smokeMaterial;
+
 private:
 	HRESULT InitWindow(HINSTANCE hInstance, int nCmdShow);
 	HRESULT InitDevice();

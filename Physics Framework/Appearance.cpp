@@ -29,9 +29,5 @@ void Appearance::Draw(ID3D11DeviceContext* pImmediateContext)
 
 Appearance::~Appearance()
 {
-	if (_textureRV)
-	{
-		delete _textureRV;
-		_textureRV = nullptr;
-	}
+	_textureRV = NULL;
 }

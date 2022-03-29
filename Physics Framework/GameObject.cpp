@@ -31,14 +31,23 @@ GameObject::GameObject(Transform* transform, Appearance* appearance, ParticleMod
 
 GameObject::~GameObject()
 {
-	delete _transform;
-	_transform = nullptr;
+	if(_transform != nullptr)
+	{
+		delete _transform;
+		_transform = nullptr;
+	}
 
-	delete _particleModel;
-	_particleModel = nullptr;
+	if(_particleModel != nullptr)
+	{
+		delete _particleModel;
+		_particleModel = nullptr;
+	}
 
-	delete _appearance;
-	_appearance = nullptr;
+	if (_appearance != nullptr)
+	{
+		delete _appearance;
+		_appearance = nullptr;
+	}
 }
 
 void GameObject::Update(float t)

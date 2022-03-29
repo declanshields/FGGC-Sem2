@@ -213,7 +213,10 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 		}
 	}
 
-	particleManager = new ParticleSystem(100, new Transform(), new Appearance(cubeGeometry, shinyMaterial, "Particle"), new ParticleModel(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), 0.0f), Vector3D(-4.0f, 0.5f, 10.0f), _pImmediateContext, _pd3dDevice);
+	smokeGeometry = cubeGeometry;
+	smokeMaterial = shinyMaterial;
+
+	particleManager = new ParticleSystem(250, smokeGeometry, smokeMaterial, Vector3D(-4.0f, 0.5f, 10.0f), _pImmediateContext, _pd3dDevice);
 
 	return S_OK;
 }
@@ -673,9 +676,17 @@ void Application::Cleanup()
     if (_pImmediateContext) _pImmediateContext->ClearState();
 	if (_pSamplerLinear) _pSamplerLinear->Release();
 
-	if (_pTextureRV) _pTextureRV->Release();
+	if (_pTextureRV)
+	{
+		_pTextureRV->Release();
+		_pTextureRV = NULL;
+	}
 
-	if (_pGroundTextureRV) _pGroundTextureRV->Release();
+	if (_pGroundTextureRV)
+	{
+		_pGroundTextureRV->Release();
+		_pGroundTextureRV = NULL;
+	}
 
     if (_pConstantBuffer) _pConstantBuffer->Release();
 
@@ -795,6 +806,10 @@ void Application::Update()
 			Vector3D acceleration = _gameObjects[1]->GetParticleModel()->GetAcceleration();
 			acceleration.x -= 0.1f;
 			_gameObjects[1]->GetParticleModel()->SetAcceleration(acceleration);
+		}
+		if (GetAsyncKeyState('D') & 0x8000)
+		{
+			
 		}
 	}
 

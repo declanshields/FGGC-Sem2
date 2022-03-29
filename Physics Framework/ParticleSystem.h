@@ -16,7 +16,7 @@ using namespace DirectX;
 class ParticleSystem
 {
 public:
-	ParticleSystem(int particleCount, Transform* transform, Appearance* appearance, ParticleModel* particleModel, const Vector3D position, ID3D11DeviceContext* context, ID3D11Device* device);
+	ParticleSystem(int particleCount, Geometry geometry, Material material, const Vector3D position, ID3D11DeviceContext* context, ID3D11Device* device);
 	~ParticleSystem();
 
 	void Update(float t);
