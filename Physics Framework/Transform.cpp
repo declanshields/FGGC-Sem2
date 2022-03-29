@@ -5,6 +5,8 @@ Transform::Transform(Vector3D position, Vector3D rotation, Vector3D scale)
     _position = position;
     _rotation = rotation;
     _scale = scale;
+
+    _crossSectionalArea = (2*scale.x) * (2*scale.y);
 }
 
 Transform::Transform() 
@@ -45,4 +47,6 @@ void Transform::SetScale(Vector3D scale)
     _centerOfMass.x *= _scale.x;
     _centerOfMass.y *= _scale.y;
     _centerOfMass.z *= _scale.z;
+
+    _crossSectionalArea = (2 * scale.x) * (2 * scale.y);
 }

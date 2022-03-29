@@ -12,6 +12,8 @@
 #include "OBJLoader.h"
 #include <string>
 
+#include "ParticleSystem.h"
+
 #include <vector>
 /*
 //#include <SpriteFont.h>
@@ -107,6 +109,11 @@ private:
 
 	//var for key press, is 0 if no key is down, is 1 while key is down
 	int keyPressed = 0;
+
+	ParticleSystem* particleManager;
+
+	Geometry smokeGeometry;
+	Material smokeMaterial;
 
 private:
 	HRESULT InitWindow(HINSTANCE hInstance, int nCmdShow);

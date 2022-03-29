@@ -213,6 +213,11 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 		}
 	}
 
+	smokeGeometry = cubeGeometry;
+	smokeMaterial = shinyMaterial;
+
+	particleManager = new ParticleSystem(250, smokeGeometry, smokeMaterial, Vector3D(-4.0f, 0.5f, 10.0f), _pImmediateContext, _pd3dDevice);
+
 	return S_OK;
 }
 
@@ -671,9 +676,17 @@ void Application::Cleanup()
     if (_pImmediateContext) _pImmediateContext->ClearState();
 	if (_pSamplerLinear) _pSamplerLinear->Release();
 
-	if (_pTextureRV) _pTextureRV->Release();
+	if (_pTextureRV)
+	{
+		_pTextureRV->Release();
+		_pTextureRV = NULL;
+	}
 
-	if (_pGroundTextureRV) _pGroundTextureRV->Release();
+	if (_pGroundTextureRV)
+	{
+		_pGroundTextureRV->Release();
+		_pGroundTextureRV = NULL;
+	}
 
     if (_pConstantBuffer) _pConstantBuffer->Release();
 
@@ -746,6 +759,8 @@ void Application::Update()
 
 	if (deltaTime < FPS_60)
 		return;
+	if (deltaTime > 1.0f)
+		deltaTime = FPS_60;
 
 	// Move gameobject
 	if (_gameObjects.size() != 0) 
@@ -783,8 +798,6 @@ void Application::Update()
 
 		if (GetKeyState('W') & 0x8000)
 		{
-			Vector3D acceleration = _gameObjects[1]->GetParticleModel()->GetAcceleration();
-			acceleration.x += 0.1f;
 			_gameObjects[1]->GetParticleModel()->SetThrust(Vector3D(5.0f, 0.0f, 0.0f));
 			_gameObjects[1]->GetParticleModel()->UpdateState(deltaTime);
 		}
@@ -793,6 +806,10 @@ void Application::Update()
 			Vector3D acceleration = _gameObjects[1]->GetParticleModel()->GetAcceleration();
 			acceleration.x -= 0.1f;
 			_gameObjects[1]->GetParticleModel()->SetAcceleration(acceleration);
+		}
+		if (GetAsyncKeyState('D') & 0x8000)
+		{
+			
 		}
 	}
 
@@ -817,6 +834,8 @@ void Application::Update()
 			gameObject->Update(deltaTime);
 		}
 	}
+
+	particleManager->Update(deltaTime);
 
 	dwTimeStart = dwTimeCur;
 	deltaTime = deltaTime - FPS_60;
@@ -893,6 +912,37 @@ void Application::Draw()
 			gameObject->Draw(_pImmediateContext);
 		}
 	}
+
+	int currentParticles = particleManager->GetParticleCount();
+	for (int i = 0; i < currentParticles; i++)
+	{
+		if (particleManager->GetArray()[i]->GetLifespan() > 0.0f)
+		{
+			Material material = particleManager->GetArray()[i]->GetAppearance()->GetMaterialData();
+
+			cb.surface.AmbientMtrl = material.ambient;
+			cb.surface.DiffuseMtrl = material.diffuse;
+			cb.surface.SpecularMtrl = material.specular;
+
+			cb.World = XMMatrixTranspose(particleManager->GetArray()[i]->GetTransform()->GetWorldMatrix());
+
+			if (particleManager->GetArray()[i]->GetAppearance()->HasTexture())
+			{
+				ID3D11ShaderResourceView* textureRV = particleManager->GetArray()[i]->GetAppearance()->GetTextureRV();
+				_pImmediateContext->PSSetShaderResources(0, 1, &textureRV);
+				cb.HasTexture = 1.0f;
+			}
+			else
+			{
+				cb.HasTexture = 0.0f;
+			}
+
+			_pImmediateContext->UpdateSubresource(_pConstantBuffer, 0, nullptr, &cb, 0, 0);
+
+			particleManager->Draw();
+		}
+	}
+
 
     //
     // Present our back buffer to our front buffer

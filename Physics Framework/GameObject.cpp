@@ -12,21 +12,51 @@ GameObject::GameObject(Transform* transform, Appearance* appearance, ParticleMod
 		Debug::DebugMsg("This object is a cube");
 }
 
+GameObject::GameObject(Transform* transform, Appearance* appearance, ParticleModel* particleModel, const Vector3D startPosition)
+{
+	Vector3D defaultVelocity = { 0.0f, 0.0f, 0.0f };
+	Vector3D defaultAcceleration = { 0.0f, 0.0f, 0.0f };
+	float    defaultMass = 0.001f;
+
+	_transform = transform;
+	_appearance = appearance;
+	_particleModel = particleModel;
+
+	_particleModel->SetMass(defaultMass);
+	_particleModel->SetVelocity(defaultVelocity);
+	_particleModel->SetAcceleration(defaultAcceleration);
+
+	_transform->SetPosition(startPosition);
+}
+
 GameObject::~GameObject()
 {
-	delete _transform;
-	_transform = nullptr;
+	if(_transform != nullptr)
+	{
+		delete _transform;
+		_transform = nullptr;
+	}
 
-	delete _particleModel;
-	_particleModel = nullptr;
+	if(_particleModel != nullptr)
+	{
+		delete _particleModel;
+		_particleModel = nullptr;
+	}
 
-	delete _appearance;
-	_appearance = nullptr;
+	if (_appearance != nullptr)
+	{
+		delete _appearance;
+		_appearance = nullptr;
+	}
 }
 
 void GameObject::Update(float t)
 {
-	//_particleModel->UpdateState(t);
+	//if(_appearance->GetType() == "Particle")
+	//	_particleModel->UpdateState(t);
+	//else
+	//	_transform->Update(t);
+
 	_transform->Update(t);
 }
 

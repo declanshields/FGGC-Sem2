@@ -3,42 +3,57 @@
 #include "Consts.h"
 
 class GameObject;
+class Particle;
 
 class ParticleModel
 {
 private:
-	GameObject* thisObject = nullptr;
-	Vector3D velocity;
-	Vector3D acceleration;
-	Vector3D thrust;
-	Vector3D netForce;
-	float mass;
+	GameObject* thisObject    = nullptr;
+	Particle*   thisParticle  = nullptr;
+	Vector3D    velocity      = { 0.0f, 0.0f, 0.0f };
+	Vector3D    acceleration  = { 0.0f, 0.0f, 0.0f };
 
-	//TODO
-	//friction, thrust, brake force
+	//forces
+	Vector3D thrust   = { 0.0f, 0.0f, 0.0f };
+	Vector3D netForce = { 0.0f, 0.0f, 0.0f };
+	Vector3D lift     = { 0.0f, 0.0f, 0.0f };
+	Vector3D drag     = { 0.0f, 0.0f, 0.0f };
 
+	float mass        = 0.0f;
+	float dragFactor  = 0.0f;
+
+	bool laminar      = false;
 public:
 	ParticleModel(Vector3D vel, Vector3D acc, float m);
 	~ParticleModel();
 
+	//Get Methods
+	Vector3D GetVelocity()     { return velocity; }
+	Vector3D GetAcceleration() { return acceleration; }
+	float    GetMass()         { return mass; }
+
+	//Set Methods
+	void SetMass         (float m)            { mass = m; }
+	void SetThrust       (Vector3D _thrust)   { thrust = _thrust; }
+	void SetLift         (Vector3D _lift)     { lift = _lift; }
+	void SetObject       (GameObject* object) { thisObject = object; }
+	void SetParticle     (Particle* particle) { thisParticle = particle; }
+	void SetAcceleration (Vector3D acc)       { acceleration = acc; }
+	void SetVelocity     (Vector3D vel)       { velocity = vel; }
+	void SetLaminar      (bool _laminar)      { laminar = _laminar; }
+
+	//Movement Methods
+	void Lift(float t);
+	void Move(float t);
 	void MoveConstVelocity(float t);
 	void MoveConstAcceleration(float t);
+	void MotionInFluid(float t);
+	void DragForce();
+	void DragLaminarFlow();
+	void DragTurbulentFlow();
 
-	Vector3D GetVelocity() { return velocity; }
-	void SetVelocity(Vector3D vel) { velocity = vel; }
-
-	Vector3D GetAcceleration() { return acceleration; }
-	void SetAcceleration(Vector3D acc) { acceleration = acc; }
-
-	float GetMass() { return mass; }
-	void SetMass(float m) { mass = m; }
-
-	void SetThrust(Vector3D _thrust) { thrust = _thrust; }
-
-	void SetObject(GameObject* object) { thisObject = object; }
-
+	//Update Methods
 	void UpdateState(float t);
 	void UpdateNetForce();
 	void UpdateAccel();
-	void Move(float t);
 };
