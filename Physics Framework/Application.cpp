@@ -174,7 +174,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 
     for (auto i = 0; i < NUMBER_OF_CUBES; i++)
 	{
-		gameObject = new GameObject(new Transform(), new Appearance(cubeGeometry, shinyMaterial, "Cube" + i), new ParticleModel(Vector3D(1.0f, 0.0f, 0.0f), Vector3D(1.0f, 0.0f, 0.0f), 1.0f));
+		gameObject = new GameObject(new Transform(), new Appearance(cubeGeometry, shinyMaterial, "Cube"), new ParticleModel(Vector3D(1.0f, 0.0f, 0.0f), Vector3D(1.0f, 0.0f, 0.0f), 1.0f));
 		gameObject->GetParticleModel()->SetObject(gameObject);
 		gameObject->GetTransform()->SetScale(Vector3D(0.5f, 0.5f, 0.5f));
 		gameObject->GetTransform()->SetPosition(Vector3D(-4.0f + (i * 2.0f), 0.5f, 10.0f));	
@@ -186,7 +186,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	gameObject = new GameObject(new Transform() , new Appearance(herculesGeometry, shinyMaterial, "donut"), new ParticleModel(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), 1.0f));
 	gameObject->GetParticleModel()->SetObject(gameObject);
 	gameObject->GetTransform()->SetScale(Vector3D(0.5f, 0.5f, 0.5f));
-	gameObject->GetTransform()->SetPosition(Vector3D(-4.0f, 0.5f, 10.0f));
+	gameObject->GetTransform()->SetPosition(Vector3D(0.0f, 0.5f, 10.0f));
 	gameObject->GetTransform()->SetRotation(Vector3D(0.0f, 0.0f, 0.0f));
 	gameObject->GetAppearance()->SetTextureRV(_pTextureRV);
 	gameObject->GetTransform()->SetCenterOfMass(herculesCenterOfMass / herculesVertices.size());
@@ -803,13 +803,13 @@ void Application::Update()
 		}
 		if (GetKeyState('S') & 0x8000)
 		{
-			Vector3D acceleration = _gameObjects[1]->GetParticleModel()->GetAcceleration();
-			acceleration.x -= 0.1f;
-			_gameObjects[1]->GetParticleModel()->SetAcceleration(acceleration);
+			_gameObjects[1]->GetParticleModel()->SetThrust(Vector3D(-5.0f, 0.0f, 0.0f));
+			_gameObjects[1]->GetParticleModel()->UpdateState(deltaTime);
 		}
 		if (GetAsyncKeyState('D') & 0x8000)
 		{
-			
+			Vector3D rotation = { _gameObjects[1]->GetTransform()->GetRotation().x + deltaTime, 0.0f, 0.0f };
+			_gameObjects[1]->GetTransform()->SetRotation(rotation);
 		}
 	}
 
@@ -836,6 +836,22 @@ void Application::Update()
 	}
 
 	particleManager->Update(deltaTime);
+
+	//check for collisions
+	for (int i = 0; i < _gameObjects.size(); i++)
+	{
+		for (int j = 0; j < _gameObjects.size(); j++)
+		{
+			if (i == j)
+				continue;
+
+			if(_gameObjects[i]->GetParticleModel()->CollisionCheck(_gameObjects[j]->GetTransform()->GetPosition(), _gameObjects[j]->GetParticleModel()->GetRadius()))
+			{
+				_gameObjects[i]->GetParticleModel()->SetVelocity(Vector3D(0.0f, 0.0f, 0.0f));
+				_gameObjects[i]->GetParticleModel()->SetAcceleration(Vector3D(0.0f, 0.0f, 0.0f));
+			}
+		}
+	}
 
 	dwTimeStart = dwTimeCur;
 	deltaTime = deltaTime - FPS_60;

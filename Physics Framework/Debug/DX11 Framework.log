@@ -4,5 +4,7 @@ D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(192,90): warning C4244: 'a
 D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(198,20): warning C4018: '<': signed/unsigned mismatch
 D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(207,20): warning C4018: '<': signed/unsigned mismatch
 D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(753,21): warning C4244: 'initializing': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(841,20): warning C4018: '<': signed/unsigned mismatch
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(843,21): warning C4018: '<': signed/unsigned mismatch
 Appearance.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
   DX11 Framework.vcxproj -> D:\Github\FGGC-Sem2\Physics Framework\Debug\DX11 Framework.exe

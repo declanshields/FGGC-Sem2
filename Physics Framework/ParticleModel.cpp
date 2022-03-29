@@ -9,6 +9,37 @@ ParticleModel::ParticleModel(Vector3D vel, Vector3D acc, float m)
 	mass = m;
 }
 
+void ParticleModel::SetObject(GameObject* object)
+{
+	thisObject = object;
+
+	if(thisObject != nullptr && thisObject->GetAppearance()->GetType() == "Floor")
+	{
+		thisObject->GetParticleModel()->SetRadius(0.0f);
+	}
+	else if(thisObject != nullptr)
+	{
+		thisObject->GetParticleModel()->SetRadius(0.5f);
+	}
+}
+
+bool ParticleModel::CollisionCheck(Vector3D position, float radius)
+{
+	if (thisObject != nullptr)
+	{
+		Vector3D difference = position - thisObject->GetTransform()->GetPosition();
+		float distance = difference.CalcMagnitude();
+
+		if (distance > radius + thisObject->GetParticleModel()->GetRadius())
+			return false;
+		else
+			return true;
+	}
+	else
+		return false;
+}
+
+
 ParticleModel::~ParticleModel() 
 {
     if(thisObject != nullptr)
@@ -55,39 +86,45 @@ void ParticleModel::Lift(float t)
 
 void ParticleModel::UpdateNetForce()
 {
+	netForce = Vector3D(0.0f, 0.0f, 0.0f);
 	//Calculate external net force
 
 	//Add weight if applicable
 	if (thisObject->GetTransform()->GetPosition().y > 0.5f)
 		netForce.y = netForce.y - (mass * gravity);
 
-	netForce = netForce + thrust;
 	netForce = netForce + lift;
 	netForce = netForce + drag;
 
 	//calculate friction if thrust is > 0
-	if (thrust.x > 0 || thrust.y > 0 || thrust.z > 0)
+	if (thrust.x != 0 || thrust.y != 0 || thrust.z != 0)
 	{
 		float normalForce = mass * gravity;
 		float frictionForce = normalForce * concrete;
 
 		if (thrust.x > 0)
 		{
-			netForce.x -= frictionForce;
-			if (netForce.x < 0)
-				netForce.x = 0;
+			if(thrust.x > frictionForce)
+			{
+				netForce.x += thrust.x - frictionForce;
+			}
+
 		}
 		if (thrust.y > 0)
 		{
-			netForce.y -= frictionForce;
-			if (netForce.y < 0)
-				netForce.y = 0;
+			if(thrust.y > frictionForce)
+			{
+				netForce.y += thrust.y - frictionForce;
+			}
+
 		}
 		if (thrust.z > 0)
 		{
-			netForce.z -= frictionForce;
-			if (netForce.z < 0)
-				netForce.z = 0;
+			if(thrust.z > frictionForce)
+			{
+				netForce.z += thrust.z - frictionForce;
+			}
+
 		}
 	}
 }

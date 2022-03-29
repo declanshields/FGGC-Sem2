@@ -28,6 +28,7 @@
     <ClInclude Include="ParticleModel.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="RigidBody.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -42,6 +43,7 @@
     <ClCompile Include="Appearance.cpp" />
     <ClCompile Include="ParticleModel.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="RigidBody.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CLInclude Include="resource.h">
