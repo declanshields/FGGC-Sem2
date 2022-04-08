@@ -16,7 +16,7 @@ ParticleSystem::ParticleSystem(int particleCount, Geometry geometry, Material ma
 
 	for (int i = 0; i < particleCount; i++)
 	{
-		GameObject* gameObject = new GameObject(new Transform(), new Appearance(geometry, material, "Particle"), new ParticleModel(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), 0.0f), position);
+		GameObject* gameObject = new GameObject(new Transform(), new Appearance(geometry, material, "Particle"), new ParticleModel(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), 1.0f), position);
 		gameObject->GetParticleModel()->SetObject(gameObject);
 		gameObject->GetTransform()->SetScale(Vector3D(0.1f, 0.1f, 0.1f));
 		gameObject->GetTransform()->SetPosition(position);
@@ -24,6 +24,7 @@ ParticleSystem::ParticleSystem(int particleCount, Geometry geometry, Material ma
 		gameObject->GetParticleModel()->SetAcceleration(Vector3D(0.0f, 0.0f, 0.0f));
 		gameObject->GetTransform()->SetRotation(Vector3D(0.0f, 0.0f, 0.0f));
 		gameObject->GetAppearance()->SetTextureRV(texture);
+		gameObject->SetLifespan(rand() % 3);
 
 		_mParticles.push_back(gameObject);
 	}
@@ -61,9 +62,9 @@ void ParticleSystem::Update(float t)
 		{
 			Vector3D lift = Vector3D();
 
-			lift.x = ((((float)rand() / (float)RAND_MAX) * 2.0f) - 1.00f);
-			lift.y = ((float)rand() / (float)RAND_MAX) * 1.75f;
-			lift.z = ((((float)rand() / (float)RAND_MAX) * 2.0f) - 1.00f);
+			lift.x = ((((float)rand() / (float)RAND_MAX) * 1.5f) - 1.00f);
+			lift.y = ((float)rand() / (float)RAND_MAX) * 5.0f - 1.0f;
+			lift.z = ((((float)rand() / (float)RAND_MAX) * 1.5f) - 1.00f);
 
 			_mParticles[i]->GetParticleModel()->SetVelocity(lift);
 			_mParticles[i]->GetParticleModel()->MoveConstVelocity(t);

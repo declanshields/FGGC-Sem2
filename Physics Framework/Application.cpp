@@ -168,6 +168,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	gameObject->GetTransform()->SetPosition(Vector3D(0.0f, 0.0f, 0.0f));
 	gameObject->GetTransform()->SetScale(Vector3D(15.0f, 15.0f, 15.0f));
 	gameObject->GetTransform()->SetRotation(Vector3D(XMConvertToRadians(90.0f), 0.0f, 0.0f));
+	gameObject->GetTransform()->SetFixed(true);
 	gameObject->GetAppearance()->SetTextureRV(_pGroundTextureRV);
 
 	_gameObjects.push_back(gameObject);
@@ -180,6 +181,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 		gameObject->GetTransform()->SetPosition(Vector3D(-4.0f + (i * 2.0f), 0.5f, 10.0f));	
 		gameObject->GetTransform()->SetRotation(Vector3D(0.0f, 0.0f, 0.0f));
 		gameObject->GetAppearance()->SetTextureRV(_pTextureRV);
+		gameObject->GetTransform()->SetAngularVelocity(Vector3D(XMConvertToRadians(45.0f), 0.0f, 0.0f));
 
 		_gameObjects.push_back(gameObject);
 	}
@@ -216,7 +218,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	smokeGeometry = cubeGeometry;
 	smokeMaterial = shinyMaterial;
 
-	particleManager = new ParticleSystem(250, smokeGeometry, smokeMaterial, Vector3D(-4.0f, 0.5f, 10.0f), _pImmediateContext, _pd3dDevice);
+	particleManager = new ParticleSystem(150, smokeGeometry, smokeMaterial, Vector3D(-4.0f, 0.5f, 10.0f), _pImmediateContext, _pd3dDevice);
 
 	return S_OK;
 }
@@ -803,9 +805,8 @@ void Application::Update()
 		}
 		if (GetKeyState('S') & 0x8000)
 		{
-			Vector3D acceleration = _gameObjects[1]->GetParticleModel()->GetAcceleration();
-			acceleration.x -= 0.1f;
-			_gameObjects[1]->GetParticleModel()->SetAcceleration(acceleration);
+			_gameObjects[1]->GetParticleModel()->SetThrust(Vector3D(-5.0f, 0.0f, 0.0f));
+			_gameObjects[1]->GetParticleModel()->UpdateState(deltaTime);
 		}
 		if (GetAsyncKeyState('D') & 0x8000)
 		{

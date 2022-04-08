@@ -66,28 +66,51 @@ void ParticleModel::UpdateNetForce()
 	netForce = netForce + drag;
 
 	//calculate friction if thrust is > 0
-	if (thrust.x > 0 || thrust.y > 0 || thrust.z > 0)
+	if (thrust.x != 0 || thrust.y != 0 || thrust.z != 0)
 	{
 		float normalForce = mass * gravity;
 		float frictionForce = normalForce * concrete;
 
-		if (thrust.x > 0)
+		if (thrust.x != 0)
 		{
-			netForce.x -= frictionForce;
-			if (netForce.x < 0)
-				netForce.x = 0;
+			if (thrust.x > 0)
+			{
+				if (thrust.x - frictionForce >= 0)
+					netForce.x += (thrust.x - frictionForce);
+			}
+			else
+			{
+				if (thrust.x + frictionForce <= 0)
+					netForce.x -= (thrust.x + frictionForce);
+			}
 		}
-		if (thrust.y > 0)
+
+		if (thrust.y != 0)
 		{
-			netForce.y -= frictionForce;
-			if (netForce.y < 0)
-				netForce.y = 0;
+			if (thrust.y > 0)
+			{
+				if (thrust.y - frictionForce >= 0)
+					netForce.y += (thrust.y - frictionForce);
+			}
+			else
+			{
+				if (thrust.y + frictionForce <= 0)
+					netForce.y -= (thrust.y + frictionForce);
+			}
 		}
-		if (thrust.z > 0)
+
+		if (thrust.z != 0)
 		{
-			netForce.z -= frictionForce;
-			if (netForce.z < 0)
-				netForce.z = 0;
+			if (thrust.z > 0)
+			{
+				if (thrust.z - frictionForce >= 0)
+					netForce.z += (thrust.z - frictionForce);
+			}
+			else
+			{
+				if (thrust.z + frictionForce <= 0)
+					netForce.z -= (thrust.z + frictionForce);
+			}
 		}
 	}
 }
