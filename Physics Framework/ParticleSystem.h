@@ -17,6 +17,8 @@ class ParticleSystem
 {
 public:
 	ParticleSystem(int particleCount, Geometry geometry, Material material, const Vector3D position, ID3D11DeviceContext* context, ID3D11Device* device);
+	ParticleSystem();
+
 	~ParticleSystem();
 
 	void Update(float t);

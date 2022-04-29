@@ -32,6 +32,10 @@ ParticleSystem::ParticleSystem(int particleCount, Geometry geometry, Material ma
 	_numOfParticles = particleCount;
 }
 
+ParticleSystem::ParticleSystem()
+{
+
+}
 
 
 ParticleSystem::~ParticleSystem()
