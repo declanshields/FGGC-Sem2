@@ -56,40 +56,60 @@ void ParticleModel::Lift(float t)
 void ParticleModel::UpdateNetForce()
 {
 	//Calculate external net force
+	netForce = Vector3D(0.0f, 0.0f, 0.0f);
 
 	//Add weight if applicable
 	if (thisObject->GetTransform()->GetPosition().y > 0.5f)
 		netForce.y = netForce.y - (mass * gravity);
 
-	netForce = netForce + thrust;
+	/*netForce = netForce + thrust;*/
 	netForce = netForce + lift;
 	netForce = netForce + drag;
 
 	//calculate friction if thrust is > 0
-	if (thrust.x > 0 || thrust.y > 0 || thrust.z > 0)
-	{
-		float normalForce = mass * gravity;
-		float frictionForce = normalForce * concrete;
+	float normalForce = mass * gravity;
+	float frictionForce = normalForce * concrete;
 
-		if (thrust.x > 0)
-		{
-			netForce.x -= frictionForce;
-			if (netForce.x < 0)
-				netForce.x = 0;
-		}
-		if (thrust.y > 0)
-		{
-			netForce.y -= frictionForce;
-			if (netForce.y < 0)
-				netForce.y = 0;
-		}
-		if (thrust.z > 0)
-		{
-			netForce.z -= frictionForce;
-			if (netForce.z < 0)
-				netForce.z = 0;
-		}
+	if (abs(thrust.x) <= abs(frictionForce) && velocity.CalcMagnitude() <= deadZone)
+	{
+		netForce.x += 0.0f;
+		velocity.x = 0.0f;
 	}
+	else if (abs(thrust.x) <= abs(frictionForce) && velocity.CalcMagnitude() >= deadZone)
+	{
+		if (velocity.x >= 0.0f)
+			netForce.x -= frictionForce;
+		else
+			netForce.x += frictionForce;
+	}
+	else if (thrust.x <= 0.0f)
+		netForce.x -= (abs(thrust.x) - frictionForce);
+	else
+		netForce.x += (thrust.x - frictionForce);
+
+	//if (abs(thrust.y) <= abs(frictionForce))
+	//	netForce.y += 0.0f;
+	//else if (thrust.y < 0.0f)
+	//	netForce.y -= (abs(thrust.y) - frictionForce);
+	//else
+	//	netForce.y += (thrust.y - frictionForce);
+
+	if (abs(thrust.z) <= abs(frictionForce) && velocity.CalcMagnitude() <= deadZone)
+	{
+		netForce.z += 0.0f;
+		velocity.z = 0.0f;
+	}
+	else if (abs(thrust.z) <= abs(frictionForce) && velocity.CalcMagnitude() >= deadZone)
+	{
+		if (velocity.z >= 0.0f)
+			netForce.z -= frictionForce;
+		else
+			netForce.z += frictionForce;
+	}
+	else if (thrust.z <= 0.0f)
+		netForce.z -= (abs(thrust.z) - frictionForce);
+	else
+		netForce.z += (thrust.z - frictionForce);
 }
 
 void ParticleModel::UpdateAccel()

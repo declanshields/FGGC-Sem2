@@ -21,6 +21,7 @@ private:
 
 	float mass        = 0.0f;
 	float dragFactor  = 0.0f;
+	float deadZone    = 0.005f;
 
 	bool laminar      = false;
 public:

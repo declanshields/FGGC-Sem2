@@ -168,18 +168,20 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	gameObject->GetTransform()->SetPosition(Vector3D(0.0f, 0.0f, 0.0f));
 	gameObject->GetTransform()->SetScale(Vector3D(15.0f, 15.0f, 15.0f));
 	gameObject->GetTransform()->SetRotation(Vector3D(XMConvertToRadians(90.0f), 0.0f, 0.0f));
+	gameObject->GetTransform()->SetFixed(true);
 	gameObject->GetAppearance()->SetTextureRV(_pGroundTextureRV);
 
 	_gameObjects.push_back(gameObject);
 
     for (auto i = 0; i < NUMBER_OF_CUBES; i++)
 	{
-		gameObject = new GameObject(new Transform(), new Appearance(cubeGeometry, shinyMaterial, "Cube" + i), new ParticleModel(Vector3D(1.0f, 0.0f, 0.0f), Vector3D(1.0f, 0.0f, 0.0f), 1.0f));
+		gameObject = new GameObject(new Transform(), new Appearance(cubeGeometry, shinyMaterial, "Cube" + i), new ParticleModel(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), 1.0f));
 		gameObject->GetParticleModel()->SetObject(gameObject);
 		gameObject->GetTransform()->SetScale(Vector3D(0.5f, 0.5f, 0.5f));
 		gameObject->GetTransform()->SetPosition(Vector3D(-4.0f + (i * 2.0f), 0.5f, 10.0f));	
 		gameObject->GetTransform()->SetRotation(Vector3D(0.0f, 0.0f, 0.0f));
 		gameObject->GetAppearance()->SetTextureRV(_pTextureRV);
+		gameObject->GetTransform()->SetAngularVelocity(Vector3D(XMConvertToRadians(45.0f), 0.0f, 0.0f));
 
 		_gameObjects.push_back(gameObject);
 	}
@@ -216,7 +218,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	smokeGeometry = cubeGeometry;
 	smokeMaterial = shinyMaterial;
 
-	particleManager = new ParticleSystem(250, smokeGeometry, smokeMaterial, Vector3D(-4.0f, 0.5f, 10.0f), _pImmediateContext, _pd3dDevice);
+	particleManager = new ParticleSystem();
 
 	return S_OK;
 }
@@ -790,6 +792,11 @@ void Application::Update()
 			while (GetAsyncKeyState('4') & 0x8000);
 			moveBackward(4);
 		}
+		if (GetAsyncKeyState(' ') & 0x8000)
+		{
+			while (GetAsyncKeyState(' ') & 0x8000);
+			particleManager = new ParticleSystem(150, smokeGeometry, smokeMaterial, _gameObjects[1]->GetTransform()->GetPosition(), _pImmediateContext, _pd3dDevice);
+		}
 
 		if (loopConstVel)
 			_gameObjects[1]->GetParticleModel()->MoveConstVelocity(deltaTime);
@@ -798,14 +805,11 @@ void Application::Update()
 
 		if (GetKeyState('W') & 0x8000)
 		{
-			_gameObjects[1]->GetParticleModel()->SetThrust(Vector3D(5.0f, 0.0f, 0.0f));
-			_gameObjects[1]->GetParticleModel()->UpdateState(deltaTime);
+			_gameObjects[1]->GetParticleModel()->SetThrust(Vector3D(10.0f, 0.0f, 0.0f));
 		}
-		if (GetKeyState('S') & 0x8000)
+	    if (GetKeyState('S') & 0x8000)
 		{
-			Vector3D acceleration = _gameObjects[1]->GetParticleModel()->GetAcceleration();
-			acceleration.x -= 0.1f;
-			_gameObjects[1]->GetParticleModel()->SetAcceleration(acceleration);
+			_gameObjects[1]->GetParticleModel()->SetThrust(Vector3D(-10.0f, 0.0f, 0.0f));
 		}
 		if (GetAsyncKeyState('D') & 0x8000)
 		{
@@ -825,6 +829,8 @@ void Application::Update()
 
 	_camera->SetPosition(cameraPos);
 	_camera->Update();
+	_gameObjects[1]->GetParticleModel()->UpdateState(deltaTime);
+	_gameObjects[1]->GetParticleModel()->SetThrust(Vector3D(0.0f, 0.0f, 0.0f));
 
 	// Update objects
 	if (_gameObjects.size() != 0) 
