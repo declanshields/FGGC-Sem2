@@ -5,6 +5,7 @@
 #include <d3dcompiler.h>
 #include <directxmath.h>
 #include <directxcolors.h>
+#include <cmath>
 #include "DDSTextureLoader.h"
 #include "resource.h"
 #include "Camera.h"
@@ -126,6 +127,8 @@ private:
 
 	void moveForward(int objectNumber);
 	void moveBackward(int objectNumber);
+
+	void HandleCollision(GameObject* obj1, GameObject* obj2);
 
 public:
 	Application();

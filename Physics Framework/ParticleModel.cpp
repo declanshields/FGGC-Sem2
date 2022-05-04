@@ -17,6 +17,20 @@ ParticleModel::~ParticleModel()
 	}
 }
 
+bool ParticleModel::CollisionCheck(Vector3D position, float radius)
+{
+	//calculate the distance between the objects
+	Vector3D thisPos = thisObject->GetTransform()->GetPosition();
+	float distance = sqrt(pow(position.x - thisPos.x, 2) + pow(position.y - thisPos.y, 2) + pow(position.z - thisPos.z, 2));
+	float radiiSum = boundingSphereRadius + radius;
+
+	if (abs(distance) >= radiiSum)
+		return false;
+	else
+		return true;
+}
+
+
 void ParticleModel::MoveConstVelocity(float t)
 {
 	//Update position

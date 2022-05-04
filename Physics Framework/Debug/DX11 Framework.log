@@ -1,7 +1,11 @@
 ﻿  Application.cpp
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(133,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(194,90): warning C4244: 'argument': conversion from 'unsigned int' to 'const float', possible loss of data
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(200,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(209,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(755,21): warning C4244: 'initializing': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-  DX11 Framework.vcxproj -> C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Debug\DX11 Framework.exe
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(133,20): warning C4018: '<': signed/unsigned mismatch
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(195,90): warning C4244: 'argument': conversion from 'unsigned int' to 'const float', possible loss of data
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(202,20): warning C4018: '<': signed/unsigned mismatch
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(211,20): warning C4018: '<': signed/unsigned mismatch
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(757,21): warning C4244: 'initializing': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(863,19): warning C4018: '<': signed/unsigned mismatch
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(865,20): warning C4018: '<': signed/unsigned mismatch
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(886,8): warning C4189: 'mass1': local variable is initialized but not referenced
+Appearance.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+  DX11 Framework.vcxproj -> D:\Github\FGGC-Sem2\Physics Framework\Debug\DX11 Framework.exe

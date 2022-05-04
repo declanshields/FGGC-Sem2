@@ -165,6 +165,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	
 	GameObject * gameObject = new GameObject(new Transform(), new Appearance(planeGeometry, noSpecMaterial, "Floor"), new ParticleModel(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), 0.0f));
 	gameObject->GetParticleModel()->SetObject(gameObject);
+	gameObject->GetParticleModel()->SetBSRadius(0.0f);
 	gameObject->GetTransform()->SetPosition(Vector3D(0.0f, 0.0f, 0.0f));
 	gameObject->GetTransform()->SetScale(Vector3D(15.0f, 15.0f, 15.0f));
 	gameObject->GetTransform()->SetRotation(Vector3D(XMConvertToRadians(90.0f), 0.0f, 0.0f));
@@ -182,16 +183,17 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 		gameObject->GetTransform()->SetRotation(Vector3D(0.0f, 0.0f, 0.0f));
 		gameObject->GetAppearance()->SetTextureRV(_pTextureRV);
 		gameObject->GetTransform()->SetAngularVelocity(Vector3D(XMConvertToRadians(45.0f), 0.0f, 0.0f));
-
+		gameObject->GetParticleModel()->SetBSRadius(0.5f);
 		_gameObjects.push_back(gameObject);
 	}
 	gameObject = new GameObject(new Transform() , new Appearance(herculesGeometry, shinyMaterial, "donut"), new ParticleModel(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), 1.0f));
 	gameObject->GetParticleModel()->SetObject(gameObject);
 	gameObject->GetTransform()->SetScale(Vector3D(0.5f, 0.5f, 0.5f));
-	gameObject->GetTransform()->SetPosition(Vector3D(-4.0f, 0.5f, 10.0f));
+	gameObject->GetTransform()->SetPosition(Vector3D(4.0f, 0.5f, 10.0f));
 	gameObject->GetTransform()->SetRotation(Vector3D(0.0f, 0.0f, 0.0f));
 	gameObject->GetAppearance()->SetTextureRV(_pTextureRV);
 	gameObject->GetTransform()->SetCenterOfMass(herculesCenterOfMass / herculesVertices.size());
+	gameObject->GetParticleModel()->SetBSRadius(0.5f);
 	Debug::DebugMsg(gameObject->GetTransform()->GetCenterOfMass());
 	_gameObjects.push_back(gameObject);
 
@@ -803,18 +805,28 @@ void Application::Update()
 		if (loopConstAcc)
 			_gameObjects[1]->GetParticleModel()->MoveConstAcceleration(deltaTime);
 
+		//reset objects thrust
+		_gameObjects[1]->GetParticleModel()->SetThrust(Vector3D());
+		Vector3D thrust = Vector3D();
+
 		if (GetKeyState('W') & 0x8000)
 		{
-			_gameObjects[1]->GetParticleModel()->SetThrust(Vector3D(10.0f, 0.0f, 0.0f));
+			thrust.z += 10.0f;
 		}
 	    if (GetKeyState('S') & 0x8000)
 		{
-			_gameObjects[1]->GetParticleModel()->SetThrust(Vector3D(-10.0f, 0.0f, 0.0f));
+			thrust.z += -10.0f;
 		}
 		if (GetAsyncKeyState('D') & 0x8000)
 		{
-			
+			thrust.x += 10.0f;
 		}
+		if (GetAsyncKeyState('A') & 0x8000)
+		{
+			thrust.x += -10.0f;
+		}
+
+		_gameObjects[1]->GetParticleModel()->SetThrust(thrust);
 	}
 
 	// Update camera
@@ -830,6 +842,7 @@ void Application::Update()
 	_camera->SetPosition(cameraPos);
 	_camera->Update();
 	_gameObjects[1]->GetParticleModel()->UpdateState(deltaTime);
+	_gameObjects[2]->GetParticleModel()->UpdateState(deltaTime);
 	_gameObjects[1]->GetParticleModel()->SetThrust(Vector3D(0.0f, 0.0f, 0.0f));
 
 	// Update objects
@@ -845,7 +858,58 @@ void Application::Update()
 
 	dwTimeStart = dwTimeCur;
 	deltaTime = deltaTime - FPS_60;
+
+	//Loop through the contents of the game object vector to do a collision check
+	for(int i = 0; i < _gameObjects.size(); i++)
+	{
+		for(int j = 0; j < _gameObjects.size(); j++)
+		{
+			//If i and j are the same, skip
+			//Also ignore collision with floor since the y value of each object will never go below the floor, and checking for collisions makes them unable to move
+			if (i == j || _gameObjects[i]->GetAppearance()->GetType() == "Floor" || _gameObjects[j]->GetAppearance()->GetType() == "Floor")
+				continue;
+
+			//check for collision
+			if (_gameObjects[i]->GetParticleModel()->CollisionCheck(_gameObjects[j]->GetTransform()->GetPosition(), _gameObjects[j]->GetParticleModel()->GetRadius()))
+			{
+				//Handle collision between the two objects
+				HandleCollision(_gameObjects[i], _gameObjects[j]);
+			}
+		}
+	}
 }
+
+void Application::HandleCollision(GameObject* obj1, GameObject* obj2)
+{
+	//Assume the second object is the object that has been collided with
+
+	float mass1 = obj1->GetParticleModel()->GetMass();
+	float mass2 = obj2->GetParticleModel()->GetMass();
+	Vector3D vel1 = obj1->GetParticleModel()->GetVelocity();
+	Vector3D vel2 = obj2->GetParticleModel()->GetVelocity();
+
+	//check to see if object is stationary
+	//If object 1 is stationary, calc impulse and resultant velocity
+	if(vel1.CalcMagnitude() == 0.0f)
+	{
+		Vector3D impulse = vel2;
+		Vector3D finalVelocity = (impulse * (1 / mass1));
+
+		obj1->GetParticleModel()->SetVelocity(finalVelocity);
+	}
+
+	//check to see if object 2 is stationary
+	if(vel2.CalcMagnitude() == 0.0f)
+	{
+		Vector3D impulse = vel1;
+		Vector3D finalVelocity = (impulse * (1 / mass2));
+
+		obj2->GetParticleModel()->SetVelocity(finalVelocity);
+	}
+
+
+}
+
 
 void Application::Draw()
 {

@@ -15,6 +15,7 @@ private:
 	Vector3D _scale;
 	Vector3D _angularVelocity{ 0.0f, 0.0f, 0.0f };
 	Vector3D _angularAcceleration = { 0.0f, 0.0f, 0.0f };
+	Vector3D _torque;
 
 	Transform* _parent = nullptr;
 	Quaternion _qRotation = { 0.0f, 0.0f, 0.0f, 0.0f };

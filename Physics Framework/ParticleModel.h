@@ -24,6 +24,8 @@ private:
 	float deadZone    = 0.005f;
 
 	bool laminar      = false;
+
+	float boundingSphereRadius;
 public:
 	ParticleModel(Vector3D vel, Vector3D acc, float m);
 	~ParticleModel();
@@ -32,6 +34,7 @@ public:
 	Vector3D GetVelocity()     { return velocity; }
 	Vector3D GetAcceleration() { return acceleration; }
 	float    GetMass()         { return mass; }
+	float    GetRadius()       { return boundingSphereRadius; }
 
 	//Set Methods
 	void SetMass         (float m)            { mass = m; }
@@ -42,6 +45,7 @@ public:
 	void SetAcceleration (Vector3D acc)       { acceleration = acc; }
 	void SetVelocity     (Vector3D vel)       { velocity = vel; }
 	void SetLaminar      (bool _laminar)      { laminar = _laminar; }
+	void SetBSRadius     (float radius)       { boundingSphereRadius = radius; }
 
 	//Movement Methods
 	void Lift(float t);
@@ -57,4 +61,5 @@ public:
 	void UpdateState(float t);
 	void UpdateNetForce();
 	void UpdateAccel();
+	bool CollisionCheck(Vector3D position, float radius);
 };
