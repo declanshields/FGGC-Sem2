@@ -17,6 +17,7 @@ public:
 	Vector3D Cross(const Vector3D& inputVector);
 	double CalcMagnitude();
 	void Normalize();
+	Vector3D NormalizeWithOutput();
 
 	//Overloaded operators
 	Vector3D operator+(const Vector3D& inputVector);

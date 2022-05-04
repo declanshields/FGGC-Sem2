@@ -7,6 +7,8 @@
 
 using namespace DirectX;
 
+class GameObject;
+
 class Transform
 {
 private:
@@ -15,7 +17,12 @@ private:
 	Vector3D _scale;
 	Vector3D _angularVelocity{ 0.0f, 0.0f, 0.0f };
 	Vector3D _angularAcceleration = { 0.0f, 0.0f, 0.0f };
-	Vector3D _torque;
+
+	XMFLOAT3X3 inertiaMatrix;
+	Vector3D torque = Vector3D();
+	float damping = 0.5f;
+
+	GameObject* object = nullptr;
 
 	Transform* _parent = nullptr;
 	Quaternion _qRotation = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -31,15 +38,17 @@ public:
 	~Transform();
 
 	//Set Methods
-	void SetPosition(Vector3D position) { _position = position; }
-	void SetScale(Vector3D scale);
-	void SetRotation(Vector3D rotation) { _rotation = rotation; }
-	void SetWorldMatrix(XMMATRIX worldMatrix) { XMStoreFloat4x4(&_world, worldMatrix); }
-	void SetCenterOfMass(Vector3D _com) { _centerOfMass = _com; }
-	void SetParent(Transform* parent) { _parent = parent; }
-	void SetAngularVelocity(Vector3D aVel) { _angularVelocity = aVel; }
-	void SetAngularAcceleration(Vector3D aAcc) { _angularAcceleration = aAcc; }
-	void SetFixed(bool fixed) { _fixed = fixed; }
+	void SetPosition           (Vector3D position)    { _position = position; }
+	void SetScale              (Vector3D scale);
+	void SetRotation           (Vector3D rotation)    { _rotation = rotation; }
+	void SetWorldMatrix        (XMMATRIX worldMatrix) { XMStoreFloat4x4(&_world, worldMatrix); }
+	void SetCenterOfMass       (Vector3D _com)        { _centerOfMass = _com; }
+	void SetParent             (Transform* parent)    { _parent = parent; }
+	void SetAngularVelocity    (Vector3D aVel)        { _angularVelocity = aVel; }
+	void SetAngularAcceleration(Vector3D aAcc)        { _angularAcceleration = aAcc; }
+	void SetFixed              (bool fixed)           { _fixed = fixed; }
+	void SetObject             (GameObject* obj);
+	void SetTorque             (Vector3D point, Vector3D force);
 
 	//Get Methods
 	Vector3D GetCenterOfMass() { return _centerOfMass; }
@@ -50,5 +59,6 @@ public:
 	Vector3D GetPosition() const { return _position; }
 
 	void Update(float t);
+	void CreateInertiaMatrix();
 };
 

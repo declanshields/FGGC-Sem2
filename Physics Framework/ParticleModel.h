@@ -20,10 +20,11 @@ private:
 	Vector3D drag     = { 0.0f, 0.0f, 0.0f };
 
 	float mass        = 0.0f;
-	float dragFactor  = 0.0f;
+	float dragFactor  = 2.5f;
 	float deadZone    = 0.005f;
 
-	bool laminar      = false;
+	bool laminar      = true;
+	bool flying       = false;
 
 	float boundingSphereRadius;
 public:
@@ -35,6 +36,8 @@ public:
 	Vector3D GetAcceleration() { return acceleration; }
 	float    GetMass()         { return mass; }
 	float    GetRadius()       { return boundingSphereRadius; }
+	bool     GetFlying()       { return flying; }
+	bool     GetLaminar()      { return laminar; }
 
 	//Set Methods
 	void SetMass         (float m)            { mass = m; }
@@ -46,6 +49,7 @@ public:
 	void SetVelocity     (Vector3D vel)       { velocity = vel; }
 	void SetLaminar      (bool _laminar)      { laminar = _laminar; }
 	void SetBSRadius     (float radius)       { boundingSphereRadius = radius; }
+	void SetFlying       (bool fly)           { flying = fly; }
 
 	//Movement Methods
 	void Lift(float t);

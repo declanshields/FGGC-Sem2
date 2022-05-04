@@ -50,6 +50,18 @@ void Vector3D::Normalize()
 	z = z / length;
 }
 
+Vector3D Vector3D::NormalizeWithOutput()
+{
+	double length = CalcMagnitude();
+
+	x = x / length;
+	y = y / length;
+	z = z / length;
+
+	Vector3D product = { x, y, z };
+	return product;
+}
+
 //Overloaded operators
 
 Vector3D Vector3D::operator+(const Vector3D& inputVector)

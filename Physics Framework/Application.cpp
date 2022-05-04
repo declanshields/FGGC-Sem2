@@ -170,6 +170,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	gameObject->GetTransform()->SetScale(Vector3D(15.0f, 15.0f, 15.0f));
 	gameObject->GetTransform()->SetRotation(Vector3D(XMConvertToRadians(90.0f), 0.0f, 0.0f));
 	gameObject->GetTransform()->SetFixed(true);
+	gameObject->GetTransform()->SetObject(gameObject);
 	gameObject->GetAppearance()->SetTextureRV(_pGroundTextureRV);
 
 	_gameObjects.push_back(gameObject);
@@ -179,11 +180,11 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 		gameObject = new GameObject(new Transform(), new Appearance(cubeGeometry, shinyMaterial, "Cube" + i), new ParticleModel(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), 1.0f));
 		gameObject->GetParticleModel()->SetObject(gameObject);
 		gameObject->GetTransform()->SetScale(Vector3D(0.5f, 0.5f, 0.5f));
-		gameObject->GetTransform()->SetPosition(Vector3D(-4.0f + (i * 2.0f), 0.5f, 10.0f));	
+		gameObject->GetTransform()->SetPosition(Vector3D(-4.0f + (i * 2.0f), 0.5f + (i * 10.0f), 10.0f));	
 		gameObject->GetTransform()->SetRotation(Vector3D(0.0f, 0.0f, 0.0f));
 		gameObject->GetAppearance()->SetTextureRV(_pTextureRV);
-		gameObject->GetTransform()->SetAngularVelocity(Vector3D(XMConvertToRadians(45.0f), 0.0f, 0.0f));
 		gameObject->GetParticleModel()->SetBSRadius(0.5f);
+		gameObject->GetTransform()->SetObject(gameObject);
 		_gameObjects.push_back(gameObject);
 	}
 	gameObject = new GameObject(new Transform() , new Appearance(herculesGeometry, shinyMaterial, "donut"), new ParticleModel(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), 1.0f));
@@ -195,6 +196,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	gameObject->GetTransform()->SetCenterOfMass(herculesCenterOfMass / herculesVertices.size());
 	gameObject->GetParticleModel()->SetBSRadius(0.5f);
 	Debug::DebugMsg(gameObject->GetTransform()->GetCenterOfMass());
+	gameObject->GetTransform()->SetObject(gameObject);
 	_gameObjects.push_back(gameObject);
 
 	herculesVertices.clear();
@@ -766,6 +768,9 @@ void Application::Update()
 	if (deltaTime > 1.0f)
 		deltaTime = FPS_60;
 
+	Vector3D testTorque;
+	bool flying = _gameObjects[1]->GetParticleModel()->GetFlying();
+
 	// Move gameobject
 	if (_gameObjects.size() != 0) 
 	{
@@ -808,24 +813,63 @@ void Application::Update()
 		//reset objects thrust
 		_gameObjects[1]->GetParticleModel()->SetThrust(Vector3D());
 		Vector3D thrust = Vector3D();
+		Vector3D lift = Vector3D();
 
 		if (GetKeyState('W') & 0x8000)
 		{
-			thrust.z += 10.0f;
+			if(flying)
+				lift.z += 20.0f;
+			else
+				thrust.z += 10.0f;
 		}
 	    if (GetKeyState('S') & 0x8000)
 		{
-			thrust.z += -10.0f;
+			if (flying)
+				lift.z += -20.0f;
+			else
+				thrust.z += -10.0f;
 		}
 		if (GetAsyncKeyState('D') & 0x8000)
 		{
-			thrust.x += 10.0f;
+			if (flying)
+				lift.x += 20.0f;
+			else
+				thrust.x += 10.0f;
 		}
 		if (GetAsyncKeyState('A') & 0x8000)
 		{
-			thrust.x += -10.0f;
+			if (flying)
+				lift.x += -20.0f;
+			else
+				thrust.x += -10.0f;
+		}
+		if (GetAsyncKeyState('Q'))
+		{
+			testTorque.x = 2.0f;
+		}
+		if (GetAsyncKeyState('E'))
+		{
+			testTorque.y = -2.0f;
+		}
+		if (GetAsyncKeyState('R'))
+		{
+			testTorque = Vector3D();
+		}
+		if (GetAsyncKeyState('F'))
+		{
+			while (GetAsyncKeyState('F'));
+			Vector3D tempPos = _gameObjects[1]->GetTransform()->GetPosition();
+			tempPos.y += 5.0f;
+			_gameObjects[1]->GetTransform()->SetPosition(tempPos);
+			_gameObjects[1]->GetParticleModel()->SetFlying(true);
+		}
+		if (GetAsyncKeyState('C'))
+		{
+			while (GetAsyncKeyState('C'));
+			_gameObjects[1]->GetParticleModel()->SetLaminar(!_gameObjects[1]->GetParticleModel()->GetLaminar());
 		}
 
+		_gameObjects[1]->GetParticleModel()->SetLift(lift);
 		_gameObjects[1]->GetParticleModel()->SetThrust(thrust);
 	}
 
@@ -841,9 +885,16 @@ void Application::Update()
 
 	_camera->SetPosition(cameraPos);
 	_camera->Update();
-	_gameObjects[1]->GetParticleModel()->UpdateState(deltaTime);
-	_gameObjects[2]->GetParticleModel()->UpdateState(deltaTime);
+
+	if (flying)
+		_gameObjects[1]->GetParticleModel()->MotionInFluid(deltaTime);
+	else
+		_gameObjects[1]->GetParticleModel()->UpdateState(deltaTime);
+
+	//_gameObjects[2]->GetParticleModel()->UpdateState(deltaTime);
 	_gameObjects[1]->GetParticleModel()->SetThrust(Vector3D(0.0f, 0.0f, 0.0f));
+
+	_gameObjects[1]->GetTransform()->SetTorque(Vector3D(-4.2f, -0.75f, 10.0f), testTorque);
 
 	// Update objects
 	if (_gameObjects.size() != 0) 
@@ -888,6 +939,22 @@ void Application::HandleCollision(GameObject* obj1, GameObject* obj2)
 	Vector3D vel1 = obj1->GetParticleModel()->GetVelocity();
 	Vector3D vel2 = obj2->GetParticleModel()->GetVelocity();
 
+	//handle object overlap
+	float distance = (obj1->GetTransform()->GetPosition() - obj2->GetTransform()->GetPosition()).CalcMagnitude();
+	float sumOfRad = obj1->GetParticleModel()->GetRadius() + obj2->GetParticleModel()->GetRadius();
+
+	Vector3D collisionNormal;
+	vel1.Normalize();
+	collisionNormal = vel1;
+	Vector3D oppCollisionNormal = {-collisionNormal.x, -collisionNormal.y, -collisionNormal.z};
+
+	//overlap distance is the remainder of the radii - the distance
+	//Vector3D newPos1 = collisionNormal * (mass1 / mass1 + mass2) * (sumOfRad - distance);
+	//Vector3D newPos2 = oppCollisionNormal * (mass2 / mass1 + mass2) * (sumOfRad - distance);
+
+	//obj1->GetTransform()->SetPosition(obj1->GetTransform()->GetPosition() + newPos1);
+	//obj2->GetTransform()->SetPosition((obj2->GetTransform()->GetPosition() + newPos2));
+
 	//check to see if object is stationary
 	//If object 1 is stationary, calc impulse and resultant velocity
 	if(vel1.CalcMagnitude() == 0.0f)
@@ -914,6 +981,8 @@ void Application::HandleCollision(GameObject* obj1, GameObject* obj2)
 		obj1->GetParticleModel()->SetVelocity(finalVelocity);
 		obj2->GetParticleModel()->SetVelocity(finalVelocity);
 	}
+
+
 }
 
 

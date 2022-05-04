@@ -74,7 +74,10 @@ void ParticleModel::UpdateNetForce()
 
 	//Add weight if applicable
 	if (thisObject->GetTransform()->GetPosition().y > 0.5f)
-		netForce.y = netForce.y - (mass * gravity);
+	{
+		Vector3D weight = { 0.0f, -(gravity * mass), 0.0f };
+		netForce = netForce + weight;
+	}
 
 	/*netForce = netForce + thrust;*/
 	netForce = netForce + lift;
@@ -84,46 +87,61 @@ void ParticleModel::UpdateNetForce()
 	float normalForce = mass * gravity;
 	float frictionForce = normalForce * concrete;
 
-	if (abs(thrust.x) <= abs(frictionForce) && velocity.CalcMagnitude() <= deadZone)
+	if (thisObject->GetTransform()->GetPosition().y <= 0.5f)
 	{
-		netForce.x += 0.0f;
-		velocity.x = 0.0f;
-	}
-	else if (abs(thrust.x) <= abs(frictionForce) && velocity.CalcMagnitude() >= deadZone)
-	{
-		if (velocity.x >= 0.0f)
-			netForce.x -= frictionForce;
-		else
-			netForce.x += frictionForce;
-	}
-	else if (thrust.x <= 0.0f)
-		netForce.x -= (abs(thrust.x) - frictionForce);
-	else
-		netForce.x += (thrust.x - frictionForce);
+		if(flying == true)
+		{
+			velocity = { 0.0f, 0.0f, 0.0f };
+			acceleration = { 0.0f, 0.0f, 0.0f };
+			lift = { 0.0f, 0.0f, 0.0f };
+			netForce = { 0.0f, 0.0f, 0.0f };
+			drag = { 0.0f, 0.0f, 0.0f };
+			flying = false;
+		}
 
-	//if (abs(thrust.y) <= abs(frictionForce))
-	//	netForce.y += 0.0f;
-	//else if (thrust.y < 0.0f)
-	//	netForce.y -= (abs(thrust.y) - frictionForce);
-	//else
-	//	netForce.y += (thrust.y - frictionForce);
-
-	if (abs(thrust.z) <= abs(frictionForce) && velocity.CalcMagnitude() <= deadZone)
-	{
-		netForce.z += 0.0f;
-		velocity.z = 0.0f;
-	}
-	else if (abs(thrust.z) <= abs(frictionForce) && velocity.CalcMagnitude() >= deadZone)
-	{
-		if (velocity.z >= 0.0f)
-			netForce.z -= frictionForce;
+		if (abs(thrust.x) <= abs(frictionForce) && velocity.CalcMagnitude() <= deadZone)
+		{
+			netForce.x += 0.0f;
+			velocity.x = 0.0f;
+		}
+		else if (abs(thrust.x) <= abs(frictionForce) && velocity.CalcMagnitude() >= deadZone)
+		{
+			if (velocity.x >= 0.0f)
+				netForce.x -= frictionForce;
+			else
+				netForce.x += frictionForce;
+		}
+		else if (thrust.x <= 0.0f)
+			netForce.x -= (abs(thrust.x) - frictionForce);
 		else
-			netForce.z += frictionForce;
+			netForce.x += (thrust.x - frictionForce);
+
+		//if (abs(thrust.y) <= abs(frictionForce))
+		//	netForce.y += 0.0f;
+		//else if (thrust.y < 0.0f)
+		//	netForce.y -= (abs(thrust.y) - frictionForce);
+		//else
+		//	netForce.y += (thrust.y - frictionForce);
+
+		if (abs(thrust.z) <= abs(frictionForce) && velocity.CalcMagnitude() <= deadZone)
+		{
+			netForce.z += 0.0f;
+			velocity.z = 0.0f;
+		}
+		else if (abs(thrust.z) <= abs(frictionForce) && velocity.CalcMagnitude() >= deadZone)
+		{
+			if (velocity.z >= 0.0f)
+				netForce.z -= frictionForce;
+			else
+				netForce.z += frictionForce;
+		}
+		else if (thrust.z <= 0.0f)
+			netForce.z -= (abs(thrust.z) - frictionForce);
+		else
+			netForce.z += (thrust.z - frictionForce);
 	}
-	else if (thrust.z <= 0.0f)
-		netForce.z -= (abs(thrust.z) - frictionForce);
 	else
-		netForce.z += (thrust.z - frictionForce);
+		netForce = netForce + thrust;
 }
 
 void ParticleModel::UpdateAccel()
@@ -171,6 +189,10 @@ void ParticleModel::Move(float t)
 
 void ParticleModel::UpdateState(float t)
 {
+	//Calculate Drag force if the object is flying
+	if (flying)
+		DragForce();
+
 	//Calculate external net force
 	UpdateNetForce();
 
@@ -210,12 +232,16 @@ void ParticleModel::DragLaminarFlow()
 
 void ParticleModel::DragTurbulentFlow()
 {
-	dragFactor = 0.5f * air_density * (velocity.CalcMagnitude() * velocity.CalcMagnitude()) * cube_damping * thisObject->GetTransform()->GetCrossSection();
+	velocity = lift;
+	dragFactor = 0.5f * air_density * cube_damping * thisObject->GetTransform()->GetCrossSection();
 
 	float velocityMagnitude = velocity.CalcMagnitude();
 	Vector3D unitVelocity;
-	velocity.Normalize();
-	unitVelocity = velocity;
+
+	if (velocity.CalcMagnitude() == 0.0f)
+		unitVelocity = velocity;
+	else
+		unitVelocity = velocity.NormalizeWithOutput();
 
 	float dragMagnitude = dragFactor * velocityMagnitude * velocityMagnitude;
 

@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "GameObject.h"
 
 Transform::Transform(Vector3D position, Vector3D rotation, Vector3D scale) 
 {
@@ -18,10 +19,57 @@ Transform::Transform()
     _angularAcceleration = Vector3D();
 }
 
+void Transform::CreateInertiaMatrix()
+{
+	if (object->GetAppearance()->GetType() == "Cube")
+	{
+        inertiaMatrix = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        inertiaMatrix._11 = (1 / 12) * object->GetParticleModel()->GetMass() * (pow(2 * GetScale().y, 2) + pow(2 * GetScale().z, 2));
+        inertiaMatrix._22 = (1 / 12) * object->GetParticleModel()->GetMass() * (pow(2 * GetScale().x, 2) + pow(2 * GetScale().z, 2));
+        inertiaMatrix._33 = (1 / 12) * object->GetParticleModel()->GetMass() * (pow(2 * GetScale().x, 2) + pow(2 * GetScale().y, 2));
+	}
+    else if (object->GetAppearance()->GetType() == "donut")
+    {
+        inertiaMatrix = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        inertiaMatrix._11 = (2 / 5) * object->GetParticleModel()->GetMass() * (1 * GetScale().x);
+        inertiaMatrix._22 = (2 / 5) * object->GetParticleModel()->GetMass() * (1 * GetScale().x);
+        inertiaMatrix._33 = (2 / 5) * object->GetParticleModel()->GetMass() * (1 * GetScale().x);
+    }
+}
+
+
+void Transform::SetObject(GameObject* obj)
+{
+    object = obj;
+    CreateInertiaMatrix();
+}
+
+void Transform::SetTorque(Vector3D point, Vector3D force)
+{
+    torque = point.Cross(force);
+}
+
+
 void Transform::Update(float t)
 {    
+    //Calculate angular acceleration
+    XMMATRIX tempMatrix = XMLoadFloat3x3(&inertiaMatrix);
+    XMMATRIX inverseTensor = XMMatrixInverse(nullptr, tempMatrix);
+    XMFLOAT3 torqueFloat = { torque.x, torque.y, torque.z };
+    XMVECTOR tempTorqueMatrix = XMLoadFloat3(&torqueFloat);
+    XMVector3Transform(tempTorqueMatrix, inverseTensor);
+
+    XMFLOAT3 angularAcc;
+    XMStoreFloat3(&angularAcc, tempTorqueMatrix);
+
+    _angularAcceleration.x = angularAcc.x;
+    _angularAcceleration.y = angularAcc.y;
+    _angularAcceleration.z = angularAcc.z;
+
     //Calculate angular velocity
-    _angularVelocity = _angularVelocity + _angularAcceleration * t;
+    _angularVelocity = _angularVelocity + (_angularAcceleration * t);
+
+    _angularVelocity = _angularVelocity * pow(damping, t);
     
     //Calculate world matrix
     XMMATRIX scale = XMMatrixScaling(GetScale().x, GetScale().y, GetScale().z);

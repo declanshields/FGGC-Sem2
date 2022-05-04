@@ -1,9 +1,8 @@
-﻿  Application.cpp
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(133,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(195,90): warning C4244: 'argument': conversion from 'unsigned int' to 'const float', possible loss of data
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(202,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(211,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(757,21): warning C4244: 'initializing': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(863,19): warning C4018: '<': signed/unsigned mismatch
-C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Application.cpp(865,20): warning C4018: '<': signed/unsigned mismatch
-  DX11 Framework.vcxproj -> C:\Users\s011459k\Documents\GitHub\FGGC-Sem2\Physics Framework\Debug\DX11 Framework.exe
+﻿  ParticleModel.cpp
+D:\Github\FGGC-Sem2\Physics Framework\ParticleModel.cpp(24,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Github\FGGC-Sem2\Physics Framework\ParticleModel.cpp(173,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Github\FGGC-Sem2\Physics Framework\ParticleModel.cpp(174,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Github\FGGC-Sem2\Physics Framework\ParticleModel.cpp(175,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Github\FGGC-Sem2\Physics Framework\ParticleModel.cpp(226,105): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Github\FGGC-Sem2\Physics Framework\ParticleModel.cpp(238,26): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  DX11 Framework.vcxproj -> D:\Github\FGGC-Sem2\Physics Framework\Debug\DX11 Framework.exe
