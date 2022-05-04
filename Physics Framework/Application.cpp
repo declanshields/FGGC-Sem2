@@ -899,15 +899,21 @@ void Application::HandleCollision(GameObject* obj1, GameObject* obj2)
 	}
 
 	//check to see if object 2 is stationary
-	if(vel2.CalcMagnitude() == 0.0f)
+	else if(vel2.CalcMagnitude() == 0.0f)
 	{
 		Vector3D impulse = vel1;
 		Vector3D finalVelocity = (impulse * (1 / mass2));
 
 		obj2->GetParticleModel()->SetVelocity(finalVelocity);
 	}
+	else
+	{
+		Vector3D momentumBefore = (vel1 * mass1) + (vel2 * mass2);
+		Vector3D finalVelocity = momentumBefore / (mass1 + mass2);
 
-
+		obj1->GetParticleModel()->SetVelocity(finalVelocity);
+		obj2->GetParticleModel()->SetVelocity(finalVelocity);
+	}
 }
 
 
