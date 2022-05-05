@@ -101,9 +101,9 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
         return E_FAIL;
     }
 
-	CreateDDSTextureFromFile(_pd3dDevice, L"Resources\\stone.dds", nullptr, &_pTextureRV);
-	CreateDDSTextureFromFile(_pd3dDevice, L"Resources\\floor.dds", nullptr, &_pGroundTextureRV);
-	CreateDDSTextureFromFile(_pd3dDevice, L"Resources\\Hercules_COLOR.dds", nullptr, &_pHerculesTextureRV);
+	CreateDDSTextureFromFile(_pd3dDevice, L"Debug\\Resources\\stone.dds", nullptr, &_pTextureRV);
+	CreateDDSTextureFromFile(_pd3dDevice, L"Debug\\Resources\\floor.dds", nullptr, &_pGroundTextureRV);
+	CreateDDSTextureFromFile(_pd3dDevice, L"Debug\\Resources\\Hercules_COLOR.dds", nullptr, &_pHerculesTextureRV);
 	
     // Setup Camera
 	XMFLOAT3 eye = XMFLOAT3(0.0f, 2.0f, -1.0f);
@@ -233,7 +233,7 @@ HRESULT Application::InitShadersAndInputLayout()
 
     // Compile the vertex shader
     ID3DBlob* pVSBlob = nullptr;
-    hr = CompileShaderFromFile(L"DX11 Framework.fx", "VS", "vs_4_0", &pVSBlob);
+    hr = CompileShaderFromFile(L"Debug\\DX11 Framework.fx", "VS", "vs_4_0", &pVSBlob);
 
     if (FAILED(hr))
     {
@@ -253,7 +253,7 @@ HRESULT Application::InitShadersAndInputLayout()
 
 	// Compile the pixel shader
 	ID3DBlob* pPSBlob = nullptr;
-    hr = CompileShaderFromFile(L"DX11 Framework.fx", "PS", "ps_4_0", &pPSBlob);
+    hr = CompileShaderFromFile(L"Debug\\DX11 Framework.fx", "PS", "ps_4_0", &pPSBlob);
 
     if (FAILED(hr))
     {
