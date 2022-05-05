@@ -12,7 +12,7 @@ ParticleSystem::ParticleSystem(int particleCount, Geometry geometry, Material ma
 
 	_mParticles.reserve(particleCount);
 
-	CreateDDSTextureFromFile(_pd3dDevice, L"Resources\\stone.dds", nullptr, &texture);
+	CreateDDSTextureFromFile(_pd3dDevice, L"Debug\\Resources\\stone.dds", nullptr, &texture);
 
 	for (int i = 0; i < particleCount; i++)
 	{

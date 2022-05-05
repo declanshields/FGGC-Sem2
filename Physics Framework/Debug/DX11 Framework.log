@@ -1,49 +1,17 @@
-﻿  Appearance.cpp
-  Application.cpp
+﻿  Application.cpp
 D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(133,20): warning C4018: '<': signed/unsigned mismatch
 D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(196,90): warning C4244: 'argument': conversion from 'unsigned int' to 'const float', possible loss of data
 D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(204,20): warning C4018: '<': signed/unsigned mismatch
 D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(213,20): warning C4018: '<': signed/unsigned mismatch
 D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(759,21): warning C4244: 'initializing': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(914,19): warning C4018: '<': signed/unsigned mismatch
-D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(916,20): warning C4018: '<': signed/unsigned mismatch
-D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(943,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  Camera.cpp
-  DDSTextureLoader.cpp
-  Debug.cpp
-D:\Github\FGGC-Sem2\Physics Framework\Debug.cpp(8,16): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-D:\Github\FGGC-Sem2\Physics Framework\Debug.cpp(8,6): warning C4189: 'success': local variable is initialized but not referenced
-D:\Github\FGGC-Sem2\Physics Framework\Debug.cpp(18,16): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-D:\Github\FGGC-Sem2\Physics Framework\Debug.cpp(18,6): warning C4189: 'success': local variable is initialized but not referenced
-  Main.cpp
-  GameObject.cpp
-  OBJLoader.cpp
-D:\Github\FGGC-Sem2\Physics Framework\OBJLoader.cpp(282,21): warning C4018: '<': signed/unsigned mismatch
-  ParticleModel.cpp
-D:\Github\FGGC-Sem2\Physics Framework\ParticleModel.cpp(24,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Github\FGGC-Sem2\Physics Framework\ParticleModel.cpp(173,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Github\FGGC-Sem2\Physics Framework\ParticleModel.cpp(174,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Github\FGGC-Sem2\Physics Framework\ParticleModel.cpp(175,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Github\FGGC-Sem2\Physics Framework\ParticleModel.cpp(226,105): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Github\FGGC-Sem2\Physics Framework\ParticleModel.cpp(238,26): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(915,19): warning C4018: '<': signed/unsigned mismatch
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(917,20): warning C4018: '<': signed/unsigned mismatch
+D:\Github\FGGC-Sem2\Physics Framework\Application.cpp(944,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   ParticleSystem.cpp
 D:\Github\FGGC-Sem2\Physics Framework\ParticleSystem.cpp(27,34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 D:\Github\FGGC-Sem2\Physics Framework\ParticleSystem.cpp(49,3): warning C5205: delete of an abstract class 'ID3D11Device' that has a non-virtual destructor results in undefined behavior
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\d3d11.h(13560): message : see declaration of 'ID3D11Device'
 D:\Github\FGGC-Sem2\Physics Framework\ParticleSystem.cpp(55,3): warning C5205: delete of an abstract class 'ID3D11DeviceContext' that has a non-virtual destructor results in undefined behavior
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\d3d11.h(7483): message : see declaration of 'ID3D11DeviceContext'
-  Transform.cpp
-D:\Github\FGGC-Sem2\Physics Framework\Transform.cpp(27,78): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Github\FGGC-Sem2\Physics Framework\Transform.cpp(28,78): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Github\FGGC-Sem2\Physics Framework\Transform.cpp(29,78): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Github\FGGC-Sem2\Physics Framework\Transform.cpp(72,46): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
-  Vector3D.cpp
-D:\Github\FGGC-Sem2\Physics Framework\Vector3D.cpp(48,8): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Github\FGGC-Sem2\Physics Framework\Vector3D.cpp(49,8): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Github\FGGC-Sem2\Physics Framework\Vector3D.cpp(50,8): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Github\FGGC-Sem2\Physics Framework\Vector3D.cpp(57,8): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Github\FGGC-Sem2\Physics Framework\Vector3D.cpp(58,8): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Github\FGGC-Sem2\Physics Framework\Vector3D.cpp(59,8): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Generating Code...
-Appearance.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
   DX11 Framework.vcxproj -> D:\Github\FGGC-Sem2\Physics Framework\Debug\DX11 Framework.exe

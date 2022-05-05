@@ -853,7 +853,8 @@ void Application::Update()
 		}
 		if (GetAsyncKeyState('R'))
 		{
-			testTorque = Vector3D();
+			_gameObjects[1]->GetTransform()->SetAngularAcceleration(Vector3D());
+			_gameObjects[1]->GetTransform()->SetAngularVelocity(Vector3D());
 		}
 		if (GetAsyncKeyState('F'))
 		{
