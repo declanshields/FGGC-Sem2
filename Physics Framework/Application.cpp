@@ -949,11 +949,11 @@ void Application::HandleCollision(GameObject* obj1, GameObject* obj2)
 	Vector3D oppCollisionNormal = {-collisionNormal.x, -collisionNormal.y, -collisionNormal.z};
 
 	//overlap distance is the remainder of the radii - the distance
-	//Vector3D newPos1 = collisionNormal * (mass1 / mass1 + mass2) * (sumOfRad - distance);
-	//Vector3D newPos2 = oppCollisionNormal * (mass2 / mass1 + mass2) * (sumOfRad - distance);
+	Vector3D newPos1 = collisionNormal * (mass1 / mass1 + mass2) * (sumOfRad - distance);
+	Vector3D newPos2 = oppCollisionNormal * (mass2 / mass1 + mass2) * (sumOfRad - distance);
 
-	//obj1->GetTransform()->SetPosition(obj1->GetTransform()->GetPosition() + newPos1);
-	//obj2->GetTransform()->SetPosition((obj2->GetTransform()->GetPosition() + newPos2));
+	obj1->GetTransform()->SetPosition(obj1->GetTransform()->GetPosition() + newPos1);
+	obj2->GetTransform()->SetPosition((obj2->GetTransform()->GetPosition() + newPos2));
 
 	//check to see if object is stationary
 	//If object 1 is stationary, calc impulse and resultant velocity
